@@ -5,13 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AA extends Model
+class Skill extends Model
 {
     use HasFactory;
-
-    public function criteria()
+    public function skillstudent()
     {
-        return $this->hasMany(Criteria::class);
+        return $this->hasMany(SkillStudent::class);
     }
     public function lesson()
     {

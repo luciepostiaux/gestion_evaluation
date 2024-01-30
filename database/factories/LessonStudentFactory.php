@@ -3,12 +3,13 @@
 namespace Database\Factories;
 
 use App\Models\Lesson;
+use App\Models\Student;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\AA>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CoursEtudiant>
  */
-class AAFactory extends Factory
+class LessonStudentFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,9 +19,10 @@ class AAFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->bs(),
-            'description' => fake()->paragraph(),
-            'lesson_id' => Lesson::get()->random()->id
+            'student_id' =>
+            Student::get()->random()->id,
+            'lesson_id' =>
+            Lesson::get()->random()->id
         ];
     }
 }

@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pre_requis', function (Blueprint $table) {
+        Schema::create('skill_students', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('student_id')->constrained()->onDelete('cascade');
+            $table->foreignId('skill_id');
+            $table->float('note');
+
             $table->timestamps();
         });
     }
@@ -22,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pre_requis');
+        Schema::dropIfExists('skill_students');
     }
 };

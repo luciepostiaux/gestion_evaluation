@@ -6,9 +6,9 @@ use App\Models\Lesson;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\AA>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\MaitriseFactory>
  */
-class AAFactory extends Factory
+class SkillFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,8 +18,12 @@ class AAFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->bs(),
+            'name' =>
+            fake()->bs(),
             'description' => fake()->paragraph(),
+
+            'comment' => fake()->paragraph(),
+
             'lesson_id' => Lesson::get()->random()->id
         ];
     }

@@ -2,16 +2,17 @@
 
 namespace Database\Seeders;
 
+use App\Models\CriteriaStudent;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class PreRequisSeeder extends Seeder
+class CriteriaStudentSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        //
+        CriteriaStudent::factory(10)->create();
     }
 }
