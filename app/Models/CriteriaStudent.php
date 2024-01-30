@@ -5,16 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AA extends Model
+class CriteriaStudent extends Model
 {
     use HasFactory;
-
     public function criteria()
     {
-        return $this->hasMany(Criteria::class);
+        return $this->belongsTo(Criteria::class);
     }
-    public function lesson()
+    public function student()
     {
-        return $this->belongsTo(Lesson::class);
+        return $this->belongsTo(Student::class);
     }
 }
