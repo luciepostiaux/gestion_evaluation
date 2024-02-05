@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->foreignId('teacher_id');
+            $table->foreignId('user_id');
             $table->timestamps();
         });
     }
