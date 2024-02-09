@@ -32,14 +32,13 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
-    Route::get('/listinglesson', function () {
-        return Inertia::render('ListingLesson');
-    })->name('ListingLesson');
+    Route::get('/lessons/addStudent/{lessonId}', [LessonController::class, 'addStudent'])->name('lessons.addStudent');
+    Route::post('lessons.addstudentlesson', [LessonController::class, 'addStudentLesson'])->name('lessons.AddStudentlesson');
+    Route::delete('lessons.deletestudentlesson', [LessonController::class, 'deleteStudentLesson'])->name('lessons.DeleteStudentLesson');
 
-    Route::get('/listingstudent', function () {
-        return Inertia::render('ListingStudent');
-    })->name('ListingStudent');
-    Route::post('/lessons', [LessonController::class, 'store'])->name('lessons.store');
-    Route::post('/section', [SectionController::class, 'store'])->name('section.store');
-    Route::post('/student', [StudentController::class, 'store'])->name('student.store');
+
+
+    Route::resource('lessons', LessonController::class)->only(['index', 'store', 'create']);
+    Route::resource('students', StudentController::class)->only(['index', 'store', 'create']);
+    Route::resource('sections', SectionController::class)->only(['index', 'store', 'create']);
 });

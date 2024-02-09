@@ -21,7 +21,6 @@ class LessonFactory extends Factory
 
 
             'name' => fake()->name(),
-            'description' => fake()->paragraph(),
             'user_id' =>
             User::get()->random()->id
         ];

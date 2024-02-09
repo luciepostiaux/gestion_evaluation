@@ -43,36 +43,61 @@ const closeLessonForm = () => {
     <AppLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Dashboard
+                Dashbaurord
             </h2>
         </template>
 
-        <Link :href="route('ListingLesson')">Liste des cours</Link>
+        <div class="flex flex-col items-center justify-center">
+            <ul class="list-none m-0 p-0">
+                <li class="mb-2">
+                    <Link
+                        :href="route('lessons.index')"
+                        class="text-blue-600 hover:text-blue-700 transition duration-300 ease-in-out"
+                    >
+                        Liste des cours
+                    </Link>
+                </li>
+                <li class="mb-2">
+                    <Link
+                        :href="route('students.index')"
+                        class="text-blue-600 hover:text-blue-700 transition duration-300 ease-in-out"
+                    >
+                        Liste des élèves
+                    </Link>
+                </li>
+                <li class="mb-2">
+                    <Link
+                        :href="route('sections.index')"
+                        class="text-blue-600 hover:text-blue-700 transition duration-300 ease-in-out"
+                    >
+                        Liste des sections
+                    </Link>
+                </li>
+            </ul>
 
-        <Link :href="route('ListingStudent')">Liste des élèves</Link>
-
-        <PrimaryButton @click="openStudentForm">Ajouter un élève</PrimaryButton>
-        <PrimaryButton @click="openClassForm"
-            >Ajouter une section</PrimaryButton
-        >
-        <PrimaryButton @click="openLessonForm">Ajouter un cours</PrimaryButton>
-
-        <FormStudent
-            v-if="showStudentForm"
-            :show="showStudentForm"
-            @close="closeStudentForm"
-        ></FormStudent>
-
-        <FormClasse
-            v-if="showClassForm"
-            :show="showClassForm"
-            @close="closeClassForm"
-        ></FormClasse>
-
-        <FormLesson
-            v-if="showLessonForm"
-            :show="showLessonForm"
-            @close="closeLessonForm"
-        ></FormLesson>
+            <ul class="list-none">
+                <li>
+                    <Link
+                        :href="route('students.create')"
+                        class="text-blue-600 hover:text-blue-700 transition duration-300 ease-in-out"
+                        >Ajouter un élève</Link
+                    >
+                </li>
+                <li>
+                    <Link
+                        :href="route('sections.create')"
+                        class="text-blue-600 hover:text-blue-700 transition duration-300 ease-in-out"
+                        >Ajouter une section</Link
+                    >
+                </li>
+                <li>
+                    <Link
+                        :href="route('lessons.create')"
+                        class="text-blue-600 hover:text-blue-700 transition duration-300 ease-in-out"
+                        >Ajouter un cours</Link
+                    >
+                </li>
+            </ul>
+        </div>
     </AppLayout>
 </template>

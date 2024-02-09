@@ -61,12 +61,12 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-    public function lesson()
+    public function lessons()
     {
         return $this->hasMany(Lesson::class);
     }
 
-    public function listinglesson(): Collection
+    public function listinglessons(): Collection
     {
         return $this->cours()->get();
     }
