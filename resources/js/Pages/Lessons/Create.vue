@@ -1,6 +1,15 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
 import FormLesson from "@/Components/FormLesson.vue";
+const props = defineProps({
+    show: {
+        type: Boolean,
+        default: false,
+    },
+    sections: {
+        type: Array,
+    },
+});
 </script>
 
 <template>
@@ -11,6 +20,6 @@ import FormLesson from "@/Components/FormLesson.vue";
             </h2>
         </template>
 
-        <FormLesson />
+        <FormLesson :sections="sections" />
     </AppLayout>
 </template>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreStudentRequest;
+use App\Models\Section;
 use App\Models\Student;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Inertia\Inertia;
@@ -16,7 +17,11 @@ class StudentController extends Controller
 
     public function create()
     {
-        return Inertia::render('Students/Create',);
+        $sections = Section::all();
+
+        return Inertia::render('Students/Create', [
+            'sections' => $sections
+        ]);
     }
     public function store(StoreStudentRequest $request)
     {
@@ -25,6 +30,7 @@ class StudentController extends Controller
         Student::create([
             'firstname' => $validated['firstname'],
             'lastname' => $validated['lastname'],
+            'section_id' => $validated['section_id']
         ]);
         session()->flash('flash.banner', 'Elève ajouté(e) avec succès!');
     }

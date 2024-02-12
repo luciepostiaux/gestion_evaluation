@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Section;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -22,7 +23,9 @@ class LessonFactory extends Factory
 
             'name' => fake()->name(),
             'user_id' =>
-            User::get()->random()->id
+            User::get()->random()->id,
+            'section_id' =>
+            Section::get()->random()->id
         ];
     }
 }

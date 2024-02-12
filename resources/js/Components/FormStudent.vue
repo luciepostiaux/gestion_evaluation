@@ -4,10 +4,13 @@ import { useForm } from "@inertiajs/vue3";
 
 const emit = defineEmits(["close"]);
 
-defineProps({
+const props = defineProps({
     show: {
         type: Boolean,
         default: false,
+    },
+    sections: {
+        type: Array,
     },
 });
 
@@ -18,7 +21,6 @@ const close = () => {
 const form = useForm({
     lastname: null,
     firstname: null,
-    sections: [],
 });
 
 const submitStudent = () => {
@@ -48,7 +50,7 @@ const submitStudent = () => {
             class="mt-4 text-sm text-gray-600"
             @submit.prevent="submitStudent"
         >
-            <h1 class="text-lg font-bold mb-4">Ajouter un cours</h1>
+            <h1 class="text-lg font-bold mb-4">Ajouter un(e) élève</h1>
 
             <!-- Champ pour le nom -->
             <div class="mb-4">
@@ -85,12 +87,11 @@ const submitStudent = () => {
                     v-model="form.firstname"
                 />
             </div>
-            <div class="mb-4">
+            <!-- <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2">
                     Sections
                 </label>
                 <div class="flex flex-wrap">
-                    <!-- Supposons que vous avez un objet 'sections' dans vos données qui contient toutes les sections -->
                     <div
                         v-for="section in sections"
                         :key="section.id"
@@ -102,13 +103,38 @@ const submitStudent = () => {
                             :value="section.id"
                             v-model="form.sections"
                         />
-                        <label
-                            :for="'section-' + section.id"
-                            class="text-sm text-gray-600"
-                            >{{ section.name }}</label
-                        >
+                        <label class="text-sm text-gray-600">
+                            {{ section.name }}
+                        </label>
                     </div>
                 </div>
+            </div> -->
+
+            <div class="mb-4">
+                <label
+                    for="section"
+                    class="block text-gray-700 text-sm font-bold mb-2"
+                >
+                    Associer à une section
+                </label>
+                <select
+                    id="section"
+                    name="section"
+                    required
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    v-model="form.section"
+                >
+                    <option type="" value="" disabled>
+                        Sélectionnez une section
+                    </option>
+                    <option
+                        v-for="section in props.sections"
+                        :key="section.id"
+                        :value="section.id"
+                    >
+                        {{ section.name }}
+                    </option>
+                </select>
             </div>
 
             <!-- Bouton pour soumettre le formulaire -->

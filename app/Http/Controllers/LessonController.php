@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreLessonRequest;
+use App\Models\AA;
 use App\Models\Lesson;
 use App\Models\LessonStudent;
+use App\Models\Section;
 use App\Models\Student;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
@@ -21,7 +23,10 @@ class LessonController extends Controller
 
     public function create()
     {
-        return Inertia::render('Lessons/Create',);
+        $sections = Section::all();
+        return Inertia::render('Lessons/Create', [
+            'sections' => $sections
+        ]);
     }
     public function store(StoreLessonRequest $request)
     {
@@ -35,11 +40,26 @@ class LessonController extends Controller
 
 
 
-    public function index()
+    public function index($id = null)
     {
-        $lessons = Lesson::all();
+        $lessons = Lesson::where('user_id', Auth::id())->get();
+
+        if ($id !== null) {
+            $selectedLesson = Lesson::find($id);
+            $aa = AA::where('lesson_id', $selectedLesson->id)->get();
+            $studentIds = LessonStudent::where('lesson_id', $selectedLesson->id)->pluck('student_id');
+            $studentslist = Student::query()->wherein('id', $studentIds)->get();
+        } else {
+            $selectedLesson = null;
+            $studentIds = null;
+            $studentslist = null;
+            $aa = null;
+        }
         return Inertia::render('Lessons/Index', [
             'lessons' => $lessons,
+            'selectedLesson' => $selectedLesson,
+            'studentslist' => $studentslist,
+            'aa' => $aa,
         ]);
     }
     public function addStudent($lessonId)

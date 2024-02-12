@@ -3,10 +3,13 @@ import { useForm } from "@inertiajs/vue3";
 
 const emit = defineEmits(["close"]);
 
-defineProps({
+const props = defineProps({
     show: {
         type: Boolean,
         default: false,
+    },
+    sections: {
+        type: Array,
     },
 });
 
@@ -62,6 +65,33 @@ const submitLesson = () => {
                     placeholder="Entrez le nom du cours"
                     v-model="form.name"
                 />
+                <div class="mb-4">
+                    <label
+                        for="section"
+                        class="block text-gray-700 text-sm font-bold mb-2"
+                    >
+                        Associé à une section
+                    </label>
+                    <select
+                        id="section"
+                        name="section"
+                        required
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        v-model="form.section"
+                    >
+                        <option value="" disabled>
+                            Sélectionnez une section
+                        </option>
+
+                        <option
+                            v-for="section in props.sections"
+                            :key="section.id"
+                            :value="section.id"
+                        >
+                            {{ section.name }}
+                        </option>
+                    </select>
+                </div>
             </div>
 
             <!-- Bouton pour soumettre le formulaire -->
