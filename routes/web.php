@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\LessonController;
+use App\Http\Controllers\SectionController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -16,13 +19,9 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return redirect('/login');
 });
+
 
 Route::middleware([
     'auth:sanctum',
@@ -32,4 +31,16 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
+
+    Route::get('/lessons/addStudent/{lessonId}', [LessonController::class, 'addStudent'])->name('lessons.addStudent');
+    Route::post('lessons.addstudentlesson', [LessonController::class, 'addStudentLesson'])->name('lessons.AddStudentlesson');
+    Route::delete('lessons.deletestudentlesson', [LessonController::class, 'deleteStudentLesson'])->name('lessons.DeleteStudentLesson');
+
+
+
+    Route::resource('lessons', LessonController::class)->only(['store', 'create']);
+
+    Route::get('lessons/{id?}', [LessonController::class, 'index'])->name('lessons.index');
+    Route::resource('students', StudentController::class)->only(['index', 'store', 'create']);
+    Route::resource('sections', SectionController::class)->only(['index', 'store', 'create']);
 });

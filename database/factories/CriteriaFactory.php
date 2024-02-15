@@ -19,7 +19,7 @@ class CriteriaFactory extends Factory
     {
         return [
             'name' =>
-            fake()->bs(),
+            fake()->name(),
             'description' =>
             fake()->paragraph(),
             'a_a_s_id' =>

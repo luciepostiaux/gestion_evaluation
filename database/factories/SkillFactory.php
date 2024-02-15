@@ -19,7 +19,7 @@ class SkillFactory extends Factory
     {
         return [
             'name' =>
-            fake()->bs(),
+            fake()->name(),
             'description' => fake()->paragraph(),
 
             'comment' => fake()->paragraph(),

@@ -2,7 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Teacher;
+use App\Models\Section;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,10 +21,11 @@ class LessonFactory extends Factory
         return [
 
 
-            'name' => fake()->bs(),
-            'description' => fake()->paragraph(),
-            'teacher_id' =>
-            Teacher::get()->random()->id
+            'name' => fake()->name(),
+            'user_id' =>
+            User::get()->random()->id,
+            'section_id' =>
+            Section::get()->random()->id
         ];
     }
 }

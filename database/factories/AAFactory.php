@@ -18,7 +18,7 @@ class AAFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->bs(),
+            'name' => fake()->name(),
             'description' => fake()->paragraph(),
             'lesson_id' => Lesson::get()->random()->id
         ];
