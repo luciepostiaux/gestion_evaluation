@@ -24,7 +24,7 @@ const props = defineProps({
             <div class="bg-white shadow sm:rounded-md mb-6">
                 <ul class="flex divide-x divide-gray-200">
                     <li
-                        class="flex-1 text-center py-4"
+                        class="flex-1 text-center py-4 hover:bg-[#1F2D55]/10"
                         v-for="lesson in lessons"
                         :key="lesson.id"
                     >
@@ -48,7 +48,7 @@ const props = defineProps({
                             :href="
                                 route('lessons.addStudent', selectedLesson.id)
                             "
-                            class="text-blue-600 hover:text-blue-700 transition duration-300 ease-in-out"
+                            class="transition duration-300 ease-in-out"
                             >Ajouter un élève</Link
                         >
                         <div class="">
