@@ -16,12 +16,10 @@ const props = defineProps({
 <template>
     <AppLayout title="Liste des cours">
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Liste des cours
-            </h2>
+            <h2 class="leading-tight">Liste des cours</h2>
         </template>
 
-        <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
+        <div class="">
             <!-- Navigation -->
             <div class="bg-white shadow sm:rounded-md mb-6">
                 <ul class="flex divide-x divide-gray-200">

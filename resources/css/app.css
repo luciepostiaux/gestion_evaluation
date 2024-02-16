@@ -5,3 +5,6 @@
 [x-cloak] {
     display: none;
 }
+html {
+    margin-right: calc(-1 * (100vw - 100%));
+}

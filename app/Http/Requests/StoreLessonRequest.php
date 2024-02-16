@@ -22,7 +22,8 @@ class StoreLessonRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'min:2', 'max:120'],
+            'name' => ['required', 'string', 'max:255'],
+            'section_id' => ['required', 'exists:sections,id'],
         ];
     }
 }

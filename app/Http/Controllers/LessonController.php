@@ -34,6 +34,8 @@ class LessonController extends Controller
         $validated = $request->validated();
         Auth::user()->lessons()->create([
             'name' => $validated['name'],
+            'section_id' => $validated['section_id'],
+
         ]);
         session()->flash('flash.banner', 'Cours ajouté avec succès!');
     }
