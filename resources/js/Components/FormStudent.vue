@@ -21,10 +21,11 @@ const close = () => {
 const form = useForm({
     lastname: null,
     firstname: null,
+    section_id: null,
 });
 
 const submitStudent = () => {
-    form.post(route("student.store"), {
+    form.post(route("students.store"), {
         onSuccess: () => {
             close();
         },
@@ -87,28 +88,6 @@ const submitStudent = () => {
                     v-model="form.firstname"
                 />
             </div>
-            <!-- <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2">
-                    Sections
-                </label>
-                <div class="flex flex-wrap">
-                    <div
-                        v-for="section in sections"
-                        :key="section.id"
-                        class="mr-2"
-                    >
-                        <input
-                            type="checkbox"
-                            :id="'section-' + section.id"
-                            :value="section.id"
-                            v-model="form.sections"
-                        />
-                        <label class="text-sm text-gray-600">
-                            {{ section.name }}
-                        </label>
-                    </div>
-                </div>
-            </div> -->
 
             <div class="mb-4">
                 <label
@@ -119,10 +98,10 @@ const submitStudent = () => {
                 </label>
                 <select
                     id="section"
-                    name="section"
+                    name="section_id"
                     required
                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    v-model="form.section"
+                    v-model="form.section_id"
                 >
                     <option type="" value="" disabled>
                         Sélectionnez une section

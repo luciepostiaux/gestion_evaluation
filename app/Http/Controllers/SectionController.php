@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreStudentRequest;
+use App\Http\Requests\StoreSectionRequest;
 use App\Models\Section;
-use App\Models\Student;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Inertia\Inertia;
 
@@ -19,7 +18,7 @@ class SectionController extends Controller
     {
         return Inertia::render('Sections/Create',);
     }
-    public function store(StoreStudentRequest $request)
+    public function store(StoreSectionRequest $request)
     {
 
         $validated = $request->validated();

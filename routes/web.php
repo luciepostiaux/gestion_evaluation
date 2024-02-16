@@ -40,7 +40,8 @@ Route::middleware([
 
     Route::resource('lessons', LessonController::class)->only(['store', 'create']);
 
-    Route::get('lessons/{id?}', [LessonController::class, 'index'])->name('lessons.index');
     Route::resource('students', StudentController::class)->only(['index', 'store', 'create']);
     Route::resource('sections', SectionController::class)->only(['index', 'store', 'create']);
+    
+    Route::get('lessons/{id?}', [LessonController::class, 'index'])->name('lessons.index');
 });

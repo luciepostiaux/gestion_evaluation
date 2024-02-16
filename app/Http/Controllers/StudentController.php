@@ -32,7 +32,7 @@ class StudentController extends Controller
             'lastname' => $validated['lastname'],
             'section_id' => $validated['section_id']
         ]);
-        session()->flash('flash.banner', 'Elève ajouté(e) avec succès!');
+        session()->flash('flash.banner', 'Élève ajouté(e) avec succès!');
     }
 
 

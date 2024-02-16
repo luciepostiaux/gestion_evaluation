@@ -30,7 +30,6 @@ class LessonController extends Controller
     }
     public function store(StoreLessonRequest $request)
     {
-
         $validated = $request->validated();
         Auth::user()->lessons()->create([
             'name' => $validated['name'],
