@@ -17,7 +17,7 @@ import { ref } from "vue";
                     <li class="mb-2 w-full">
                         <Link
                             :href="route('lessons.index')"
-                            class="flex flex-col items-center justify-center transition duration-300 ease-in-out p-8 border-[#1F2D55]/25 border-2 rounded-2xl hover:bg-[#1F2D55]/10 hover:border-transparent w-full text-center"
+                            class="flex flex-col items-center justify-center transition duration-300 ease-in-out p-8 border-[#1F2D55]/25 border-2 rounded-2xl hover:bg-[#1F2D55]/10 hover:border-transparent w-full text-center shadow-md bg-white"
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -36,7 +36,7 @@ import { ref } from "vue";
                     <li class="mb-2 w-full">
                         <Link
                             :href="route('lessons.create')"
-                            class="flex flex-col items-center justify-center transition duration-300 ease-in-out p-8 border-[#1F2D55]/25 border-2 rounded-2xl hover:bg-[#1F2D55]/10 hover:border-transparent w-full text-center"
+                            class="flex flex-col items-center justify-center transition duration-300 ease-in-out p-8 border-[#1F2D55]/25 border-2 rounded-2xl hover:bg-[#1F2D55]/10 hover:border-transparent w-full text-center shadow-md bg-white"
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -62,7 +62,7 @@ import { ref } from "vue";
                     <li class="mb-2 w-full">
                         <Link
                             :href="route('students.index')"
-                            class="flex flex-col items-center justify-center transition duration-300 ease-in-out p-8 border-[#1F2D55]/25 border-2 rounded-2xl hover:bg-[#1F2D55]/10 hover:border-transparent w-full text-center"
+                            class="flex flex-col items-center justify-center transition duration-300 ease-in-out p-8 border-[#1F2D55]/25 border-2 rounded-2xl hover:bg-[#1F2D55]/10 hover:border-transparent w-full text-center shadow-md bg-white"
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -81,7 +81,7 @@ import { ref } from "vue";
                     <li class="mb-2 w-full">
                         <Link
                             :href="route('students.create')"
-                            class="flex flex-col items-center justify-center transition duration-300 ease-in-out p-8 border-[#1F2D55]/25 border-2 rounded-2xl hover:bg-[#1F2D55]/10 hover:border-transparent w-full text-center"
+                            class="flex flex-col items-center justify-center transition duration-300 ease-in-out p-8 border-[#1F2D55]/25 border-2 rounded-2xl hover:bg-[#1F2D55]/10 hover:border-transparent w-full text-center shadow-md bg-white"
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -107,7 +107,7 @@ import { ref } from "vue";
                     <li class="mb-2 w-full">
                         <Link
                             :href="route('sections.index')"
-                            class="flex flex-col items-center justify-center transition duration-300 ease-in-out p-8 border-[#1F2D55]/25 border-2 rounded-2xl hover:bg-[#1F2D55]/10 hover:border-transparent w-full text-center"
+                            class="flex flex-col items-center justify-center transition duration-300 ease-in-out p-8 border-[#1F2D55]/25 border-2 rounded-2xl hover:bg-[#1F2D55]/10 hover:border-transparent w-full text-center shadow-md bg-white"
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -126,7 +126,7 @@ import { ref } from "vue";
                     <li class="mb-2 w-full">
                         <Link
                             :href="route('sections.create')"
-                            class="flex flex-col items-center justify-center transition duration-300 ease-in-out p-8 border-[#1F2D55]/25 border-2 rounded-2xl hover:bg-[#1F2D55]/10 hover:border-transparent w-full text-center"
+                            class="flex flex-col items-center justify-center transition duration-300 ease-in-out p-8 border-[#1F2D55]/25 border-2 rounded-2xl hover:bg-[#1F2D55]/10 hover:border-transparent w-full text-center shadow-md bg-white"
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
