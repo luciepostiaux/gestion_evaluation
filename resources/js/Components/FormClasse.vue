@@ -19,7 +19,7 @@ const form = useForm({
 });
 
 const submitClasse = () => {
-    form.post(route("section.store"), {
+    form.post(route("sections.store"), {
         onSuccess: () => {
             close();
         },

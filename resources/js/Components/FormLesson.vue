@@ -19,7 +19,7 @@ const close = () => {
 
 const form = useForm({
     name: null,
-    description: null,
+    section_id: null,
 });
 
 const submitLesson = () => {
@@ -74,10 +74,10 @@ const submitLesson = () => {
                     </label>
                     <select
                         id="section"
-                        name="section"
+                        name="section_id"
                         required
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        v-model="form.section"
+                        v-model="form.section_id"
                     >
                         <option value="" disabled>
                             Sélectionnez une section
