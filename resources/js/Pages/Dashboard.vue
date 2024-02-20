@@ -67,7 +67,7 @@ import { ref } from "vue";
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24"
-                                fill="currentColor"
+                                fill="#1F2D55"
                                 class="size-10 my-2"
                             >
                                 >
@@ -112,7 +112,7 @@ import { ref } from "vue";
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24"
-                                fill="currentColor"
+                                fill="#1F2D55"
                                 class="size-10 my-2"
                             >
                                 >

@@ -27,7 +27,8 @@ const form = useForm({
 const submitStudent = () => {
     form.post(route("students.store"), {
         onSuccess: () => {
-            form.name = null;
+            form.lastname = null;
+            form.firstname = null;
             form.section_id = null;
             close();
         },
