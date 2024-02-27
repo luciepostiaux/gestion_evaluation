@@ -51,8 +51,6 @@ const submitStudent = () => {
             class="mt-4 text-sm text-gray-600"
             @submit.prevent="submitStudent"
         >
-            <h1 class="text-lg font-bold mb-4">Ajouter un(e) élève</h1>
-
             <!-- Champ pour le nom -->
             <div class="mb-4">
                 <label
