@@ -13,6 +13,6 @@ class CriteriaStudentSeeder extends Seeder
      */
     public function run(): void
     {
-        CriteriaStudent::factory(10)->create();
+        CriteriaStudent::factory(50)->create();
     }
 }

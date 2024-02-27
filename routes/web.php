@@ -55,4 +55,5 @@ Route::middleware([
 
     Route::get('lessons/{id?}', [LessonController::class, 'index'])->name('lessons.index');
     Route::put('/sections/{section}', [SectionController::class, 'update'])->name('sections.update');
+    Route::get('/sections/{section}/lessons', [LessonController::class, 'indexBySection'])->name('sections.lessons.index');
 });
