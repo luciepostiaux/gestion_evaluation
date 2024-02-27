@@ -43,7 +43,9 @@ Route::middleware([
 
     Route::resource('students', StudentController::class)->only(['index', 'store', 'create']);
     Route::resource('sections', SectionController::class)->only(['index', 'store', 'create']);
-    Route::resource('aas', AaController::class)->only(['create']);
+    Route::resource('aas', AaController::class)->only(['create', 'store']);
+    Route::post('/criteria', [CriteriaController::class, 'store'])->name('criteria.store');
+
 
     Route::get('lessons/{id?}', [LessonController::class, 'index'])->name('lessons.index');
 });

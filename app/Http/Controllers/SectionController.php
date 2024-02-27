@@ -37,4 +37,6 @@ class SectionController extends Controller
             'sections' => $sections,
         ]);
     }
+
+    
 }
