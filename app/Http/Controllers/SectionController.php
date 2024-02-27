@@ -61,14 +61,10 @@ class SectionController extends Controller
 
     public function update(StoreSectionRequest $request, $id)
     {
-        $sections = Section::all();
-
         $section = Section::findOrFail($id);
         $section->update($request->validated());
 
-        return Inertia::render('Sections/Index', [
-            'sections' => $sections,
-            'message', 'Section updated successfully.',
-        ]);
+        // Redirection côté client après la mise à jour réussie
+        return Inertia::location(route('sections.index'));
     }
 }

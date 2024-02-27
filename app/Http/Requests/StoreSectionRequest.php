@@ -22,8 +22,12 @@ class StoreSectionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                'unique:sections,name,' . $this->section, // Assurez-vous que le nom est unique dans la table sections
+            ],
         ];
     }
 }
