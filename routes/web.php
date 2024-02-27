@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AaController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\StudentController;
@@ -42,6 +43,7 @@ Route::middleware([
 
     Route::resource('students', StudentController::class)->only(['index', 'store', 'create']);
     Route::resource('sections', SectionController::class)->only(['index', 'store', 'create']);
-    
+    Route::resource('aas', AaController::class)->only(['create']);
+
     Route::get('lessons/{id?}', [LessonController::class, 'index'])->name('lessons.index');
 });

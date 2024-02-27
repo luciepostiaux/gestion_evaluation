@@ -44,7 +44,9 @@ const remove = (id) => {
         <div class="md:grid md:grid-cols-2 md:gap-6">
             <!-- Première colonne pour tous les élèves -->
             <ul class="divide-y bg-white shadow sm:rounded-md">
-                <h2 class="flex text-lg space-x-4 items-center p-4 sm:p-6">
+                <h2
+                    class="flex font-poppins justify-center items-center text-lg space-x-4 p-4 sm:p-6 bg-[#1F2D55] text-white rounded-t-md"
+                >
                     Tous les élèves
                 </h2>
                 <li
@@ -63,7 +65,9 @@ const remove = (id) => {
 
             <!-- Deuxième colonne pour les élèves inscrits dans le cours -->
             <ul class="divide-y bg-white shadow sm:rounded-md">
-                <h2 class="flex text-lg space-x-4 items-center p-4 sm:p-6">
+                <h2
+                    class="flex font-poppins justify-center items-center text-lg space-x-4 p-4 sm:p-6 bg-[#1F2D55] text-white rounded-t-md"
+                >
                     Élèves inscrits au cours
                 </h2>
                 <li

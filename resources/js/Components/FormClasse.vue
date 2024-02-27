@@ -21,57 +21,43 @@ const form = useForm({
 const submitClasse = () => {
     form.post(route("sections.store"), {
         onSuccess: () => {
+            form.name = null;
             close();
         },
     });
 };
 </script>
 <template>
-    <div
-        v-show="show"
-        class="mb-6 rounded-lg overflow-hidden transform transition-all sm:w-full sm:mx-auto"
-    >
-        <!-- Bouton de fermeture en haut à droite -->
-        <div class="flex justify-end p-2">
-            <button @click="close" class="text-gray-400 hover:text-gray-600">
-                <span class="text-2xl">&times;</span>
-            </button>
-        </div>
-        <slot v-if="show" />
-    </div>
-
     <div class="px-6 py-4">
-        <form class="mt-4 text-sm text-gray-600" @submit.prevent="submitClasse">
-            <h1 class="text-lg font-bold mb-4">Ajouter une section</h1>
+        <div class="flex justify-center items-center">
+        <form class="bg-white shadow sm:rounded-md p-8 text-sm text-gray-600 w-full max-w-xl" @submit.prevent="submitClasse">
 
-            <!-- Champ pour le nom -->
-            <div class="mb-4">
+            <div class="mb-6">
                 <label
                     for="name"
-                    class="block text-gray-700 text-sm font-bold mb-2"
+                    class="block text-[#1F2D55] font-poppins text-base font-bold mb-2"
                 >
-                    Nom du cours
+                    Nom de la section
                 </label>
                 <input
                     type="text"
                     id="name"
                     name="name"
                     required
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    placeholder="Entrez le nom du cours"
+                    class="shadow border-[#62BFC1] rounded w-full mb-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-[#62BFC1] "
+                    placeholder="Entrez le nom de la section"
                     v-model="form.name"
                 />
             </div>
-
-            <!-- Bouton pour soumettre le formulaire -->
-            <div class="flex items-center justify-between">
+            <div class="flex justify-end">
                 <button
                     type="submit"
-                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    class="bg-[#62BFC1] font-poppins text-white text-base font-bold py-2 px-6 rounded"
                 >
                     Ajouter
                 </button>
             </div>
         </form>
+    </div>
     </div>
 </template>
