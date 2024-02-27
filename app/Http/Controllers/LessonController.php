@@ -101,7 +101,17 @@ class LessonController extends Controller
         ])->validate();
         $inscrit = LessonStudent::where('student_id', $request->student_id)
             ->where('lesson_id', $request->lesson_id)
-            ->first(); // Assurez-vous d'utiliser first() pour obtenir un modèle unique
+            ->first();
         $inscrit->delete();
+    }
+
+    public function indexBySection(Section $section)
+    {
+        $lessons = $section->lessons;
+
+        return Inertia::render('Sections/Lessons', [
+            'section' => $section,
+            'lessons' => $section->lessons,
+        ]);
     }
 }

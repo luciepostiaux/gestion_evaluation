@@ -13,6 +13,6 @@ class AASeeder extends Seeder
      */
     public function run(): void
     {
-        AA::factory(10)->create();
+        AA::factory(250)->create();
     }
 }
