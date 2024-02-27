@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AaController;
+use App\Http\Controllers\CriteriaController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\StudentController;
@@ -41,9 +42,17 @@ Route::middleware([
 
     Route::resource('lessons', LessonController::class)->only(['store', 'create']);
 
-    Route::resource('students', StudentController::class)->only(['index', 'store', 'create']);
-    Route::resource('sections', SectionController::class)->only(['index', 'store', 'create']);
-    Route::resource('aas', AaController::class)->only(['create']);
+    Route::resource('students', StudentController::class)->only(['index', 'store', 'create', 'edit', 'update']);
+    Route::resource('sections', SectionController::class)->only(['index', 'store', 'create', 'edit']);
+    Route::delete('/sections/{section}', [SectionController::class, 'destroy'])->name(
+        'sections.destroy'
+    );
+    Route::delete('/students/{students}', [StudentController::class, 'destroy'])->name('students.destroy');
+
+    Route::resource('aas', AaController::class)->only(['create', 'store']);
+    Route::post('/criteria', [CriteriaController::class, 'store'])->name('criteria.store');
+
 
     Route::get('lessons/{id?}', [LessonController::class, 'index'])->name('lessons.index');
+    Route::put('/sections/{section}', [SectionController::class, 'update'])->name('sections.update');
 });

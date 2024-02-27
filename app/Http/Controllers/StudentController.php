@@ -44,4 +44,29 @@ class StudentController extends Controller
             'students' => $students,
         ]);
     }
+
+
+    public function destroy($id)
+    {
+        $student = Student::findOrFail($id);
+        $student->delete();
+
+        // Utilisez Inertia::location pour forcer la redirection côté client
+        return Inertia::location(route('students.index'));
+    }
+
+    public function edit($id)
+    {
+        $student = Student::findOrFail($id);
+        return Inertia::render('Students/Edit', ['student' => $student]);
+    }
+
+    public function update(StoreStudentRequest $request, $id)
+    {
+        $student = Student::findOrFail($id);
+        $student->update($request->validated());
+
+        // Redirection côté client après la mise à jour réussie
+        return Inertia::location(route('students.index'));
+    }
 }
