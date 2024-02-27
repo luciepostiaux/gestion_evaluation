@@ -37,6 +37,38 @@ class SectionController extends Controller
             'sections' => $sections,
         ]);
     }
+    // public function destroy($id)
+    // {
+    //     $section = Section::findOrFail($id);
+    //     $section->delete();
 
-    
+    //     return redirect()->route('sections.index')->with('success', 'Section deleted successfully.');
+    // }
+    public function destroy($id)
+    {
+        $section = Section::findOrFail($id);
+        $section->delete();
+
+        // Utilisez Inertia::location pour forcer la redirection côté client
+        return Inertia::location(route('sections.index'));
+    }
+
+    public function edit($id)
+    {
+        $section = Section::findOrFail($id);
+        return Inertia::render('Sections/Edit', ['section' => $section]);
+    }
+
+    public function update(StoreSectionRequest $request, $id)
+    {
+        $sections = Section::all();
+
+        $section = Section::findOrFail($id);
+        $section->update($request->validated());
+
+        return Inertia::render('Sections/Index', [
+            'sections' => $sections,
+            'message', 'Section updated successfully.',
+        ]);
+    }
 }
