@@ -1,19 +1,67 @@
 <script setup>
+import { computed, ref } from 'vue';
 import DangerButton from "@/Components/DangerButton.vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { Inertia } from "@inertiajs/inertia";
+import { useForm } from "@inertiajs/inertia-vue3";
 import { Link } from "@inertiajs/vue3";
+import { defineProps } from "vue";
 
 const props = defineProps(["students"]);
+
+const form = useForm({
+    firstname: "",
+    lastname: "",
+});
 
 const deleteStudent = (studentId) => {
     if (confirm("Êtes-vous sûr de vouloir supprimer cet élève ?")) {
         Inertia.delete(route("students.destroy", studentId), {
-            preserveScroll: true,
-            preserveState: true,
-            onSuccess: () => {},
+            onSuccess: () => {
+                props.students = props.students.filter(
+                    (student) => student.id !== studentId
+                );
+            },
         });
     }
+};
+
+const searchQuery = ref("");
+
+const filteredStudents = computed(() => {
+    if (!searchQuery.value) {
+        return props.students;
+    } else {
+        const query = searchQuery.value.toLowerCase();
+        return props.students.filter(student =>
+            student.firstname.toLowerCase().includes(query) ||
+            student.lastname.toLowerCase().includes(query)
+        );
+    }
+});
+
+const editingStudentId = ref(null);
+
+const startEditing = (student) => {
+    editingStudentId.value = student.id;
+    form.firstname = student.firstname;
+    form.lastname = student.lastname;
+};
+
+const stopEditing = () => {
+    editingStudentId.value = null;
+};
+
+const saveStudent = (studentId) => {
+    if (form.firstname.trim() === "" || form.lastname.trim() === "") {
+        return;
+    }
+
+    Inertia.put(route("students.update", studentId), form.data, {
+        onSuccess: () => {
+            stopEditing();
+        },
+    });
 };
 </script>
 
@@ -22,10 +70,17 @@ const deleteStudent = (studentId) => {
         <template #header>
             <h2 class="leading-tight">Liste des élèves</h2>
         </template>
-        <!-- Phrase au-dessus des colonnes -->
-        <p class="italic text-gray-400 mb-6 ml-4">
-            Retrouvez ci-dessous la liste des élèves :
-        </p>
+        <div class="flex items-center mb-4">
+            <p class="italic text-gray-400 ml-4 flex-grow">
+                Retrouvez ci-dessous la liste des élèves :
+            </p>
+            <input
+                v-model="searchQuery"
+                type="text"
+                class="input rounded border-[#1F2D55] w-64"
+                placeholder="Rechercher un élève"
+            />
+        </div>
         <div class="mb-4">
             <Link
                 :href="route('students.create')"
@@ -50,40 +105,65 @@ const deleteStudent = (studentId) => {
             >
                 <li
                     class="flex items-center justify-between p-4 sm:p-6 hover:bg-[#1F2D55]/10"
-                    v-for="student in students"
+                    v-for="student in filteredStudents"
                     :key="student.id"
                 >
-                    <label class="w-full text-center" :for="student.id">
-                        {{ student.firstname }} {{ student.lastname }}
-                    </label>
-                    <div class="flex space-x-2">
-                        <Link
-                            :href="route('students.edit', student.id)"
-                            class="edit-button"
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="#62BFC1"
-                                class="size-6 mr-2"
-                            >
-                                <path
-                                    d="M6.41421 15.89L16.5563 5.74785L15.1421 4.33363L5 14.4758V15.89H6.41421ZM7.24264 17.89H3V13.6473L14.435 2.21231C14.8256 1.82179 15.4587 1.82179 15.8492 2.21231L18.6777 5.04074C19.0682 5.43126 19.0682 6.06443 18.6777 6.45495L7.24264 17.89ZM3 19.89H21V21.89H3V19.89Z"
-                                ></path>
-                            </svg>
-                        </Link>
-                        <DangerButton @click="deleteStudent(student.id)">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="#FFFFFF"
-                                class="size-6"
-                            >
-                                <path
-                                    d="M17 6H22V8H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V8H2V6H7V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V6ZM18 8H6V20H18V8ZM9 11H11V17H9V11ZM13 11H15V17H13V11ZM9 4V6H15V4H9Z"
-                                ></path>
-                            </svg>
-                        </DangerButton>
+                    <div class="flex items-center">
+                        <!-- Nom et prénom centrés -->
+                        <p class="text-center" v-if="editingStudentId !== student.id">{{ student.firstname }} {{ student.lastname }}</p>
+                    </div>
+                    <div class="flex items-center">
+                        <!-- Boutons alignés à la même hauteur -->
+                        <template v-if="editingStudentId === student.id">
+                            <div class="flex items-center space-x-2">
+                                <input
+                                    v-model="form.firstname"
+                                    type="text"
+                                    class="input rounded border-[#62BFC1]"
+                                    placeholder="Prénom"
+                                />
+                                <input
+                                    v-model="form.lastname"
+                                    type="text"
+                                    class="input rounded border-[#62BFC1]"
+                                    placeholder="Nom"
+                                />
+                                <button
+                                    @click="saveStudent(student.id)"
+                                    class="btn font-semibold text-xl text-white px-4 py-1.5 rounded bg-[#62BFC1]"
+                                >
+                                    ✓
+                                </button>
+                                <button
+                                    @click="stopEditing"
+                                    class="btn font-semibold text-xl text-white px-4 py-1.5 rounded bg-red-600"
+                                >
+                                    ×
+                                </button>
+                            </div>
+                        </template>
+                        <template v-else>
+                            <div class="flex items-center space-x-2">
+                                <button
+                                    @click="startEditing(student)"
+                                    class="btn font-semibold text-xl text-white px-4 py-1.5 rounded bg-[#62BFC1]"
+                                >
+                                    ✎
+                                </button>
+                                <DangerButton @click="deleteStudent(student.id)">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24"
+                                        fill="#FFFFFF"
+                                        class="size-6"
+                                    >
+                                        <path
+                                            d="M17 6H22V8H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V8H2V6H7V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V6ZM18 8H6V20H18V8ZM9 11H11V17H9V11ZM13 11H15V17H13V11ZM9 4V6H15V4H9Z"
+                                        ></path>
+                                    </svg>
+                                </DangerButton>
+                            </div>
+                        </template>
                     </div>
                 </li>
             </ul>
