@@ -113,10 +113,31 @@ const props = defineProps({
                             ></div>
                             <div class="bg-white sm:rounded-md text-white px-6">
                                 <h3
-                                    class="text-xl text-[#1F2D55] underline underline-offset-1 text-poppins font-bold mb-2"
+                                    class="text-xl text-[#1F2D55] underline underline-offset-1 text-poppins font-bold mb-2 flex items-center justify-between"
                                 >
                                     Liste des AA de {{ selectedLesson.name }} :
+                                    <Link
+                                        :href="
+                                            route('aas.create', {
+                                                lessonId: selectedLesson.id,
+                                            })
+                                        "
+                                        class="flex items-center rounded-lg px-4 py-2"
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 24 24"
+                                            fill="white"
+                                            class="w-6 h-6 mr-2"
+                                        >
+                                            <path
+                                                d="M11 11V7H13V11H17V13H13V17H11V13H7V11H11ZM12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20Z"
+                                            ></path>
+                                        </svg>
+                                        Modifier les AA
+                                    </Link>
                                 </h3>
+
                                 <div
                                     class="flex space-x-4 items-center p- sm:p-6"
                                     v-for="aaa in aa"

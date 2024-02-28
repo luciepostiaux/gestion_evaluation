@@ -44,16 +44,18 @@ Route::middleware([
 
     Route::resource('students', StudentController::class)->only(['index', 'store', 'create', 'edit', 'update']);
     Route::resource('sections', SectionController::class)->only(['index', 'store', 'create', 'edit']);
+    Route::resource('aas', AaController::class)->only(['create', 'store']);
+
     Route::delete('/sections/{section}', [SectionController::class, 'destroy'])->name(
         'sections.destroy'
     );
     Route::delete('/students/{students}', [StudentController::class, 'destroy'])->name('students.destroy');
 
-    Route::resource('aas', AaController::class)->only(['create', 'store']);
     Route::post('/criteria', [CriteriaController::class, 'store'])->name('criteria.store');
 
 
-    Route::get('lessons/{id?}', [LessonController::class, 'index'])->name('lessons.index');
     Route::put('/sections/{section}', [SectionController::class, 'update'])->name('sections.update');
+
+    Route::get('lessons/{id?}', [LessonController::class, 'index'])->name('lessons.index');
     Route::get('/sections/{section}/lessons', [LessonController::class, 'indexBySection'])->name('sections.lessons.index');
 });

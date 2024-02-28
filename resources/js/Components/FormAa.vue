@@ -1,15 +1,20 @@
 <script setup>
 import { useForm } from "@inertiajs/vue3";
-import { ref } from "vue";
+import { ref, defineProps } from "vue";
+
+const props = defineProps({
+    lessonId: Number, // Assurez-vous que le type correspond à ce que vous attendez
+});
 
 const formAA = useForm({
     name: null,
     description: null,
+    lesson_id: props.lessonId, // Utilisation de lessonId reçu en prop
 });
 
 const formCriteria = useForm({
     aacriteria: [{ id: Date.now(), value: "" }],
-    aaId: null, // Assurez-vous d'avoir un champ pour stocker l'ID de l'AA actuellement sélectionnée
+    lesson_id: props.lessonId, // Utilisation de lessonId reçu en prop
 });
 
 const addCriteria = () => {
@@ -80,13 +85,13 @@ const submitCriteria = () => {
             >
                 <div class="mb-6">
                     <label
-                        for="name"
+                        for="aa-name"
                         class="block text-[#1F2D55] font-poppins text-base font-bold mb-2"
                         >Nom du AA :</label
                     >
                     <input
                         type="text"
-                        id="name"
+                        id="aa-name"
                         name="name"
                         required
                         class="shadow border-[#62BFC1] rounded w-full mb-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-[#62BFC1]"
@@ -96,12 +101,12 @@ const submitCriteria = () => {
                 </div>
                 <div class="mb-6">
                     <label
-                        for="description"
+                        for="aa-description"
                         class="block text-[#1F2D55] font-poppins text-base font-bold mb-2"
                         >Critères (Remplacer 'Description') :</label
                     >
                     <textarea
-                        id="description"
+                        id="aa-description"
                         name="description"
                         class="shadow border-[#62BFC1] rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-[#62BFC1]"
                         placeholder="Entrez les critères"
