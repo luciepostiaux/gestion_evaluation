@@ -4,6 +4,7 @@ use App\Http\Controllers\AaController;
 use App\Http\Controllers\CriteriaController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\SectionController;
+use App\Http\Controllers\SkillController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -35,13 +36,12 @@ Route::middleware([
     })->name('dashboard');
 
     Route::get('/lessons/addStudent/{lessonId}', [LessonController::class, 'addStudent'])->name('lessons.addStudent');
-    Route::post('lessons.addstudentlesson', [LessonController::class, 'addStudentLesson'])->name('lessons.AddStudentlesson');
-    Route::delete('lessons.deletestudentlesson', [LessonController::class, 'deleteStudentLesson'])->name('lessons.DeleteStudentLesson');
+    Route::post('lessons/addstudentlesson', [LessonController::class, 'addStudentLesson'])->name('lessons.AddStudentlesson');
+    Route::delete('lessons/deletestudentlesson', [LessonController::class, 'deleteStudentLesson'])->name('lessons.DeleteStudentLesson');
 
 
 
     Route::resource('lessons', LessonController::class)->only(['store', 'create']);
-
     Route::resource('students', StudentController::class)->only(['index', 'store', 'create', 'edit', 'update']);
     Route::resource('sections', SectionController::class)->only(['index', 'store', 'create', 'edit']);
     Route::resource('aas', AaController::class)->only(['create', 'store']);
@@ -51,11 +51,10 @@ Route::middleware([
     );
     Route::delete('/students/{students}', [StudentController::class, 'destroy'])->name('students.destroy');
 
-    Route::post('/criteria', [CriteriaController::class, 'store'])->name('criteria.store');
+    Route::post('/skill', [SkillController::class, 'store'])->name('skill.store');
 
-
-    Route::put('/sections/{section}', [SectionController::class, 'update'])->name('sections.update');
-
+    Route::get('aas/lessons/{id}', [AaController::class, 'edit'])->name('aas.edit');
     Route::get('lessons/{id?}', [LessonController::class, 'index'])->name('lessons.index');
+    Route::put('/sections/{section}', [SectionController::class, 'update'])->name('sections.update');
     Route::get('/sections/{section}/lessons', [LessonController::class, 'indexBySection'])->name('sections.lessons.index');
 });

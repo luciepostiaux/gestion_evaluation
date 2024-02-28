@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreCriteriaRequest extends FormRequest
+class StoreSkillRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +26,6 @@ class StoreCriteriaRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'description' => ['required', 'string'],
             'lesson_id' => ['required', 'integer', 'exists:lessons,id'], // Assurez-vous que le lesson_id existe dans la table lessons
         ];
     }

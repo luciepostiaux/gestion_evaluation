@@ -19,7 +19,6 @@ class AAFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'description' => fake()->paragraph(),
             'lesson_id' => Lesson::get()->random()->id
         ];
     }

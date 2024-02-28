@@ -1,6 +1,11 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
 import FormAa from "@/Components/FormAa.vue";
+const props = defineProps({
+    lesson: Object,
+    skills: Array,
+    aas: Array,
+});
 </script>
 
 <template>
@@ -11,6 +16,10 @@ import FormAa from "@/Components/FormAa.vue";
             </h2>
         </template>
 
-        <FormAa />
+        <FormAa
+            :lesson="props.lesson"
+            :skills="props.skills"
+            :aas="props.aas"
+        />
     </AppLayout>
 </template>

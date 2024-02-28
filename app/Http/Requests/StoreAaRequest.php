@@ -17,9 +17,7 @@ class StoreAaRequest extends FormRequest
 
         return [
             'name' => ['required', 'string', 'max:255'],
-            'description' => ['required', 'string'],
             'lesson_id' => ['required', 'exists:lessons,id'],
-            // Ajoutez d'autres règles de validation pour les critères
         ];
     }
 }

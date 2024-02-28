@@ -118,9 +118,7 @@ const props = defineProps({
                                     Liste des AA de {{ selectedLesson.name }} :
                                     <Link
                                         :href="
-                                            route('aas.create', {
-                                                lessonId: selectedLesson.id,
-                                            })
+                                            route('aas.edit', selectedLesson.id)
                                         "
                                         class="flex items-center rounded-lg px-4 py-2"
                                     >
