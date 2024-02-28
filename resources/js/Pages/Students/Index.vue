@@ -22,15 +22,19 @@ const deleteStudent = (studentId) => {
         <template #header>
             <h2 class="leading-tight">Liste des élèves</h2>
         </template>
+        <!-- Phrase au-dessus des colonnes -->
+        <p class="italic text-gray-400 mb-6 ml-4">
+            Retrouvez ci-dessous la liste des élèves :
+        </p>
         <div class="mb-4">
             <Link
                 :href="route('students.create')"
-                class="flex items-center justify-center transition duration-300 ease-in-out px-6 py-3 border-[#1F2D55]/25 border-2 rounded-lg hover:bg-[#1F2D55]/10 hover:border-transparent text-center shadow-sm bg-white"
+                class="flex items-center justify-center transition duration-300 ease-in-out px-6 py-3 mb-8 border-[#1F2D55]/25 border-2 rounded-lg hover:bg-[#1F2D55]/10 hover:border-transparent text-center text-white shadow-sm bg-[#1F2D55]"
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
-                    fill="#1F2D55"
+                    fill="white"
                     class="size-6 mr-2"
                 >
                     <path
