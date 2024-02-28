@@ -20,12 +20,13 @@ class AaController extends Controller
     {
         $lesson = Lesson::findOrFail($id);
         $skills = $lesson->skills;
-        $aa = $lesson->aas;
-        // $criterias = $aa->criteria;
+        $aas = $lesson->aas;
+        $aas->load('criteria');
+        // dd($aas);
         return Inertia::render('Aas/Create', [
             'lesson' => $lesson,
             'skills' => $skills,
-            'aa' => $aa,
+            'aas' => $aas,
             // 'criterias' => $criterias,
 
         ]);
@@ -36,16 +37,9 @@ class AaController extends Controller
         $lesson = Lesson::findOrFail($request->lesson_id);
         $validated = $request->validated();
 
-        $lesson->aa()->create([
+        $lesson->aas()->create([
             'name' => $validated['name'],
-            'description' => $validated['description'],
-            'lesson_id' => $validated['lesson_id'],
         ]);
-        // $lesson->criterias()->create([
-        //     'name' => $validated['name'],
-        //     // 'description' => $validated['description'],
-        //     'lesson_id' => $validated['lesson_id'],
-        // ]);
         session()->flash('flash.banner', 'AA ajoutée avec succès!');
     }
 }

@@ -6,14 +6,12 @@ import InputError from "./InputError.vue";
 const props = defineProps({
     lesson: Object,
     skills: Array,
-    aa: Object,
-    criterias: Array,
+    aas: Array,
 });
 
-const formAA = useForm({
-    name: null,
-    description: null,
-    lesson_id: props.lessonId, // Utilisation de lessonId reçu en prop
+const formAddAa = useForm({
+    name: "",
+    lesson_id: props.lesson.id, // Utilisation de lessonId reçu en prop
 });
 
 const formAddSkill = useForm({
@@ -22,12 +20,21 @@ const formAddSkill = useForm({
 });
 
 const addSkill = () => {
-    formAddSkill.post(route("skill.store"));
+    formAddSkill.post(route("skill.store"), {
+        preserveScroll: true,
+        onSuccess: () => {
+            formAddSkill.reset("name");
+        },
+    });
 };
 
-const addAA = () => {
-    formAA.reset(); // Réinitialise le formulaire AA
-    formCriteria.reset(); // Réinitialise le formulaire des critères
+const addAa = () => {
+    formAddAa.post(route("aas.store"), {
+        preserveScroll: true,
+        onSuccess: () => {
+            formAddAa.reset("name");
+        },
+    });
 };
 
 const submitAA = () => {
@@ -37,18 +44,6 @@ const submitAA = () => {
         preserveScroll: true,
         onSuccess: (page) => {
             formCriteria.aaId = page.props.id; // Assurez-vous que le backend renvoie l'ID de la nouvelle AA
-        },
-        onError: () => {
-            // Traitez les erreurs ici
-        },
-    });
-};
-
-const submitSkill = () => {
-    formCriteria.post(route("skill.store"), {
-        preserveScroll: true,
-        onSuccess: () => {
-            formSkills.reset("aacriteria"); // Réinitialise uniquement les critères
         },
         onError: () => {
             // Traitez les erreurs ici
@@ -84,94 +79,62 @@ const submitSkill = () => {
         </div>
 
         <div class="w-full lg:w-1/4 p-4">
-            <!-- <form
-                @submit.prevent="submitAA"
-                class="bg-white shadow sm:rounded-md p-4"
-            >
+            <div class="bg-white shadow sm:rounded-md p-4">
                 <div class="mb-6">
-                    <label
-                        for="aa-name"
+                    <div
                         class="block text-[#1F2D55] font-poppins text-base font-bold mb-2"
-                        >Nom de l'acquis :</label
                     >
-                    <input
-                        type="text"
-                        id="aa-name"
-                        name="name"
-                        required
-                        class="shadow border-[#62BFC1] rounded w-full mb-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-[#62BFC1]"
-                        placeholder="Entrez le nom du AA"
-                        v-model="formAA.name"
-                    />
+                        Acquis d'apprentissage :
+                    </div>
+                    <ul>
+                        <li
+                            v-for="aa in aas"
+                            :key="aa.id"
+                            class="mb-2 py-2 px-3 rounded text-gray-700 leading-tight"
+                        >
+                            {{ aa.name }}
+
+                            <ul class="">
+                                <li
+                                    v-for="criteria in aa.criteria"
+                                    class="font-semibold text-xs"
+                                >
+                                    {{ criteria.name }}
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
-                <div class="mb-6">
-                    <label
-                        for="aa-description"
-                        class="block text-[#1F2D55] font-poppins text-base font-bold mb-2"
-                        >Critères de l'acquis :</label
-                    >
-                    <textarea
-                        id="aa-description"
-                        name="description"
-                        class="shadow border-[#62BFC1] rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-[#62BFC1]"
-                        placeholder="Entrez la description du critère"
-                        v-model="formAA.description"
-                    ></textarea>
-                </div>
-                <div class="flex justify-end">
-                    <button
-                        type="submit"
-                        @click.prevent="submitAA"
-                        class="bg-[#62BFC1] font-poppins text-white text-base font-bold py-2 px-6 rounded"
-                    >
-                        Valider AA
-                    </button>
-                </div>
-            </form> -->
-            <form
-                @submit.prevent="submitAA"
-                class="bg-white shadow sm:rounded-md p-4"
-            >
-                <div class="mb-6">
-                    <label
-                        for="aa-name"
-                        class="block text-[#1F2D55] font-poppins text-base font-bold mb-2"
-                        >Nom de l'acquis :</label
-                    >
-                    <input
-                        type="text"
-                        id="aa-name"
-                        name="name"
-                        required
-                        class="shadow border-[#62BFC1] rounded w-full mb-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-[#62BFC1]"
-                        placeholder="Entrez le nom du AA"
-                        v-model="formAA.name"
-                    />
-                </div>
-                <div class="mb-6">
-                    <label
-                        for="aa-description"
-                        class="block text-[#1F2D55] font-poppins text-base font-bold mb-2"
-                        >Critères de l'acquis :</label
-                    >
-                    <textarea
-                        id="aa-description"
-                        name="description"
-                        class="shadow border-[#62BFC1] rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-[#62BFC1]"
-                        placeholder="Entrez la description du critère"
-                        v-model="formAA.description"
-                    ></textarea>
-                </div>
-                <div class="flex justify-end">
-                    <button
-                        type="submit"
-                        @click.prevent="submitAA"
-                        class="bg-[#62BFC1] font-poppins text-white text-base font-bold py-2 px-6 rounded"
-                    >
-                        Valider AA
-                    </button>
-                </div>
-            </form>
+                <form @submit.prevent="addAa" class="">
+                    <div class="mb-6">
+                        <label
+                            for="aaAdd"
+                            class="block text-[#1F2D55] font-poppins text-base font-bold mb-2"
+                            >Ajouter un acquis d'apprentissage :</label
+                        >
+                        <input
+                            type="text"
+                            id="aaAdd"
+                            class="shadow border-[#62BFC1] rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-[#62BFC1]"
+                            placeholder="Entrez l'acquis d'apprentissage"
+                            v-model="formAddAa.name"
+                        />
+                        <InputError
+                            :message="formAddAa.errors.name"
+                            class="mt-2"
+                        />
+                    </div>
+                    <div class="flex justify-end">
+                        <button
+                            type="submit"
+                            @click.prevent="addAa"
+                            class="bg-[#62BFC1] font-poppins text-white text-base font-bold py-2 px-6 rounded"
+                        >
+                            Ajouter l'acquis d'apprentissage
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
 
         <div class="w-full lg:w-1/4 p-4">

@@ -17,7 +17,6 @@ class StoreAaRequest extends FormRequest
 
         return [
             'name' => ['required', 'string', 'max:255'],
-            'description' => ['required', 'string'],
             'lesson_id' => ['required', 'exists:lessons,id'],
         ];
     }

@@ -10,13 +10,13 @@ class AA extends Model
     use HasFactory;
     protected $fillable = [
         'name',
-        'description',
         'lesson_id',
     ];
 
     public function criteria()
     {
-        return $this->hasMany(Criteria::class);
+        return $this->hasMany(Criteria::class, "a_a_s_id");
+
     }
     public function lesson()
     {

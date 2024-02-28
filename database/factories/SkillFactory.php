@@ -20,9 +20,7 @@ class SkillFactory extends Factory
         return [
             'name' =>
             fake()->name(),
-            'description' => fake()->paragraph(),
 
-            'comment' => fake()->paragraph(),
 
             'lesson_id' => Lesson::get()->random()->id
         ];

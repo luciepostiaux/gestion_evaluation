@@ -4,6 +4,7 @@ import FormAa from "@/Components/FormAa.vue";
 const props = defineProps({
     lesson: Object,
     skills: Array,
+    aas: Array,
 });
 </script>
 
@@ -15,6 +16,10 @@ const props = defineProps({
             </h2>
         </template>
 
-        <FormAa :lesson="props.lesson" :skills="props.skills" />
+        <FormAa
+            :lesson="props.lesson"
+            :skills="props.skills"
+            :aas="props.aas"
+        />
     </AppLayout>
 </template>

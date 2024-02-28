@@ -17,6 +17,6 @@ class Criteria extends Model
     }
     public function aa()
     {
-        return $this->belongsTo(AA::class);
+        return $this->belongsTo(AA::class, "a_a_s_id");
     }
 }
