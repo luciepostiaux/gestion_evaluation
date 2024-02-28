@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useForm } from "@inertiajs/inertia-vue3";
 import DangerButton from "@/Components/DangerButton.vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
@@ -46,20 +46,42 @@ const deleteSection = (sectionId) => {
         });
     }
 };
+
+// Barre de recherche
+const searchQuery = ref("");
+
+// Fonction de filtre pour les sections
+const filteredSections = computed(() => {
+    if (!searchQuery.value) {
+        return props.sections;
+    } else {
+        return props.sections.filter(section =>
+            section.name.toLowerCase().includes(searchQuery.value.toLowerCase())
+        );
+    }
+});
 </script>
+
 
 <template>
     <AppLayout title="Liste des sections">
         <template #header>
             <h2 class="leading-tight">Liste des sections</h2>
         </template>
-        <!-- Phrase au-dessus des colonnes -->
-        <p class="italic text-gray-400 mb-6 ml-4">
-            Retrouvez ci-dessous la liste des sections :
-        </p>
+        <div class="flex items-center mb-4">
+            <p class="italic text-gray-400 ml-4 flex-grow">
+                Retrouvez ci-dessous la liste des sections :
+            </p>
+            <input
+                v-model="searchQuery"
+                type="text"
+                class="input rounded border-[#1F2D55] w-64"
+                placeholder="Rechercher une section"
+            />
+        </div>
         <Link
             :href="route('sections.create')"
-            class="flex items-center justify-center transition duration-300 ease-in-out px-6 py-3 mb-8 border-[#1F2D55]/25 border-2 rounded-lg hover:bg-[#1F2D55]/10 hover:border-transparent text-center text-white shadow-sm bg-[#1F2D55]"
+            class="flex items-center justify-center transition duration-300 ease-in-out px-6 py-3 mb-8 border-[#1F2D55] border-2 rounded-lg hover:bg-[#1F2D55] hover:border-transparent text-center text-white shadow-sm bg-[#1F2D55]"
         >
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -79,7 +101,7 @@ const deleteSection = (sectionId) => {
             >
                 <li
                     class="flex items-center justify-between p-4 sm:p-6 hover:bg-[#1F2D55]/10"
-                    v-for="section in sections"
+                    v-for="section in filteredSections"
                     :key="section.id"
                 >
                     <div v-if="editingSectionId === section.id">
