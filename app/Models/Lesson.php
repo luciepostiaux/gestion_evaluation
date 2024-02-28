@@ -18,12 +18,16 @@ class Lesson extends Model
     {
         return $this->hasMany(LessonStudent::class);
     }
-    public function aa()
+    public function aas()
     {
         return $this->hasMany(AA::class);
     }
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function skills()
+    {
+        return $this->hasMany(Skill::class);
     }
 }

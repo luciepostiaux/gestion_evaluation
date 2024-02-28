@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('student_id')->constrained()->onDelete('cascade');
             $table->foreignId('skill_id');
+            $table->text('comment')->nullable();
+
             $table->float('note');
 
             $table->timestamps();
