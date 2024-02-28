@@ -11,14 +11,15 @@ class StoreAaRequest extends FormRequest
         return true; // Assurez-vous que l'utilisateur est autorisé à faire cette action
     }
 
-    public function rules(): array
+    // Dans StoreAaRequest et StoreCriteriaRequest ou équivalent
+    public function rules()
     {
+
         return [
             'name' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
-            'lesson_id' => ['required', 'integer', 'exists:lessons,id'], // Assurez-vous que lesson_id existe dans la table lessons
-            'aacriteria' => ['required', 'array'],
-            'aacriteria.*.value' => ['required', 'string', 'max:255'], // Valide chaque critère individuellement
+            'description' => ['required', 'string'],
+            'lesson_id' => ['required', 'exists:lessons,id'],
+            // Ajoutez d'autres règles de validation pour les critères
         ];
     }
 }
