@@ -21,12 +21,12 @@ const props = defineProps({
         <div class="mb-4">
             <Link
                 :href="route('lessons.create')"
-                class="flex items-center justify-center transition duration-300 ease-in-out px-6 py-3 border-[#1F2D55]/25 border-2 rounded-lg hover:bg-[#1F2D55]/10 hover:border-transparent text-center shadow-sm bg-white"
+                class="flex items-center justify-center transition duration-300 ease-in-out px-6 py-3 border-[#1F2D55] border-2 rounded-lg hover:bg-[#1F2D55] hover:border-transparent text-center text-white shadow-sm bg-[#1F2D55]"
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
-                    fill="#1F2D55"
+                    fill="white"
                     class="size-6 mr-2"
                 >
                     <path
@@ -64,39 +64,42 @@ const props = defineProps({
                             <h3 class="text-lg font-medium">
                                 {{ selectedLesson.name }}
                             </h3>
-                            <Link
-                                :href="
-                                    route(
-                                        'lessons.addStudent',
-                                        selectedLesson.id
-                                    )
-                                "
-                                class="flex items-center transition duration-300 ease-in-out"
-                            >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24"
-                                    fill="white"
-                                    class="size-6 my-2 mr-2 cursor-pointer"
-                                    @click="yourClickFunctionHere"
-                                >
-                                    <path
-                                        d="M11 11V7H13V11H17V13H13V17H11V13H7V11H11ZM12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20Z"
-                                    ></path>
-                                </svg>
-                                Ajouter un élève
-                            </Link>
                         </div>
 
                         <div class="grid md:grid-cols-1 md:gap-6">
                             <div
                                 class="bg-white sm:rounded-md text-white px-6 py-4"
                             >
-                                <h3
-                                    class="text-xl underline underline-offset-1 text-poppins font-bold text-[#1F2D55] mb-2"
-                                >
-                                    Liste des élèves inscrits au cours :
-                                </h3>
+                                <div class="flex justify-between items-center">
+                                    <h3
+                                        class="text-xl underline underline-offset-1 text-poppins font-bold text-[#1F2D55] mb-2"
+                                    >
+                                        Liste des élèves inscrits au cours :
+                                    </h3>
+                                    <Link
+                                        :href="
+                                            route(
+                                                'lessons.addStudent',
+                                                selectedLesson.id
+                                            )
+                                        "
+                                        class="flex items-center text-[#1F2D55] transition duration-300 ease-in-out"
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 24 24"
+                                            fill="#1F2D55"
+                                            class="size-6 my-2 mr-2 cursor-pointer"
+                                            @click="yourClickFunctionHere"
+                                        >
+                                            <path
+                                                d="M11 11V7H13V11H17V13H13V17H11V13H7V11H11ZM12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20Z"
+                                            ></path>
+                                        </svg>
+                                        Ajouter un élève
+                                    </Link>
+                                </div>
+
                                 <div
                                     class="flex space-x-4 items-center text-black mx-6 py-1"
                                     v-for="student in studentslist"
@@ -112,20 +115,21 @@ const props = defineProps({
                                 class="bg-gray-400 h-px w-full my-2 mb-8"
                             ></div>
                             <div class="bg-white sm:rounded-md text-white px-6">
+                                <div class="flex justify-between items-center">
                                 <h3
                                     class="text-xl text-[#1F2D55] underline underline-offset-1 text-poppins font-bold mb-2 flex items-center justify-between"
                                 >
-                                    Liste des AA de {{ selectedLesson.name }} :
+                                    Liste des AA de {{ selectedLesson.name }} :</h3>
                                     <Link
                                         :href="
                                             route('aas.edit', selectedLesson.id)
                                         "
-                                        class="flex items-center rounded-lg px-4 py-2"
+                                        class="flex items-center text-[#1F2D55] transition duration-300 ease-in-out"
                                     >
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             viewBox="0 0 24 24"
-                                            fill="white"
+                                            fill="#1F2D55"
                                             class="w-6 h-6 mr-2"
                                         >
                                             <path
@@ -134,7 +138,7 @@ const props = defineProps({
                                         </svg>
                                         Modifier les AA
                                     </Link>
-                                </h3>
+                                    </div>
 
                                 <div
                                     class="flex space-x-4 items-center p- sm:p-6"
