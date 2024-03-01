@@ -3,6 +3,7 @@
 use App\Http\Controllers\AaController;
 use App\Http\Controllers\CriteriaController;
 use App\Http\Controllers\LessonController;
+use App\Http\Controllers\ResultController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\StudentController;
@@ -35,6 +36,9 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
+
+
+    Route::get('/results/adjournement', [ResultController::class, 'adjournement'])->name('results.adjournement');
     Route::get('/lessons/addStudent/{lessonId}', [LessonController::class, 'addStudent'])->name('lessons.addStudent');
     Route::post('lessons/addstudentlesson', [LessonController::class, 'addStudentLesson'])->name('lessons.AddStudentlesson');
     Route::delete('lessons/deletestudentlesson', [LessonController::class, 'deleteStudentLesson'])->name('lessons.DeleteStudentLesson');
