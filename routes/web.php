@@ -39,6 +39,7 @@ Route::middleware([
 
 
     Route::get('/results/adjournement', [ResultController::class, 'adjournement'])->name('results.adjournement');
+    Route::get('/results/refuse', [ResultController::class, 'refuse'])->name('results.refuse');
     Route::get('/lessons/addStudent/{lessonId}', [LessonController::class, 'addStudent'])->name('lessons.addStudent');
     Route::post('lessons/addstudentlesson', [LessonController::class, 'addStudentLesson'])->name('lessons.AddStudentlesson');
     Route::delete('lessons/deletestudentlesson', [LessonController::class, 'deleteStudentLesson'])->name('lessons.DeleteStudentLesson');

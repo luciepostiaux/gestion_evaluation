@@ -11,5 +11,10 @@ class ResultController extends Controller
     {
         return Inertia::render('Results/Adjournement');
     }
+
+    public function refuse()
+    {
+        return Inertia::render('Results/Refuse');
+    }
 }
 
