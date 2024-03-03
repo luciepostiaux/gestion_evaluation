@@ -7,6 +7,7 @@ use App\Http\Controllers\ResultController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\StudentController;
+use App\Models\AA;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -57,6 +58,9 @@ Route::middleware([
     Route::delete('/students/{students}', [StudentController::class, 'destroy'])->name('students.destroy');
 
     Route::post('/skill', [SkillController::class, 'store'])->name('skill.store');
+
+    Route::post('/criteria', [AAController::class, 'store'])->name('criteria.store');
+
 
     Route::get('aas/lessons/{id}', [AaController::class, 'edit'])->name('aas.edit');
     Route::get('lessons/{id?}', [LessonController::class, 'index'])->name('lessons.index');
