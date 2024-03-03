@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreAaRequest;
+use App\Http\Requests\StoreCriteriaRequest;
 use App\Models\AA;
 use App\Models\Criteria;
 use App\Models\Lesson;
@@ -41,5 +42,17 @@ class AaController extends Controller
             'name' => $validated['name'],
         ]);
         session()->flash('flash.banner', 'AA ajoutée avec succès!');
+    }
+
+    public function storeCriteria(StoreCriteriaRequest $request)
+    {
+        $validated = $request->validated();
+
+        $criteria = new Criteria();
+        $criteria->name = $validated['name'];
+        $criteria->aa_id = $validated['aa_id'];
+        $criteria->save();
+
+        session()->flash('flash.banner', 'Critère ajouté avec succès!');
     }
 }
