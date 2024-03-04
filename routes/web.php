@@ -37,7 +37,7 @@ Route::middleware([
     })->name('dashboard');
 
 
-
+    Route::get('/results/evaluation', [ResultController::class, 'evaluation'])->name('results.evaluation');
     Route::get('/results/adjournement', [ResultController::class, 'adjournement'])->name('results.adjournement');
     Route::get('/results/refuse', [ResultController::class, 'refuse'])->name('results.refuse');
     Route::get('/lessons/addStudent/{lessonId}', [LessonController::class, 'addStudent'])->name('lessons.addStudent');

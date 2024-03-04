@@ -16,5 +16,9 @@ class ResultController extends Controller
     {
         return Inertia::render('Results/Refuse');
     }
+    public function evaluation()
+    {
+        return Inertia::render('Results/Evaluation');
+    }
 }
 
