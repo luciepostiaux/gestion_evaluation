@@ -21,4 +21,25 @@ class SkillController extends Controller
         ]);
         session()->flash('flash.banner', 'Critère de maîtrise ajouté avec succès!');
     }
+
+    public function destroy($id)
+    {
+        $skill = Skill::find($id);
+        $skill->delete();
+
+        session()->flash('flash.banner', 'Skill supprimé avec succès!');
+    }
+    public function edit($id)
+    {
+        $skill = Skill::find($id);
+        // Ici, vous pouvez renvoyer une vue avec le formulaire de modification
+    }
+    public function update(StoreSkillRequest $request, $id)
+    {
+        $skill = Skill::find($id);
+        $skill->update($request->all());
+
+        session()->flash('flash.banner', 'Skill mis à jour avec succès!');
+        return redirect()->route('skills.index');
+    }
 }

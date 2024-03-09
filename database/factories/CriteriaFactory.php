@@ -22,6 +22,8 @@ class CriteriaFactory extends Factory
             fake()->name(),
             'description' =>
             fake()->paragraph(),
+            'notation' =>
+            fake()->numberBetween(5,30),
             'a_a_s_id' =>
             AA::get()->random()->id
         ];

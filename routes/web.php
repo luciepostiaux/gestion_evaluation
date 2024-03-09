@@ -43,7 +43,12 @@ Route::middleware([
     Route::get('/lessons/addStudent/{lessonId}', [LessonController::class, 'addStudent'])->name('lessons.addStudent');
     Route::post('lessons/addstudentlesson', [LessonController::class, 'addStudentLesson'])->name('lessons.AddStudentlesson');
     Route::delete('lessons/deletestudentlesson', [LessonController::class, 'deleteStudentLesson'])->name('lessons.DeleteStudentLesson');
-
+    Route::delete('/aas/{id}', [AaController::class, 'destroy']);
+    Route::delete('/criteria/{id}', [AaController::class, 'destroyCriteria']);
+    Route::delete('/skills/{id}', [SkillController::class, 'destroy']);
+    Route::get('/aas/{id}/update', [AaController::class, 'update'])->name('aas.update');
+    Route::get('/skills/{id}/edit', [SkillController::class, 'edit'])->name('skills.edit');
+    Route::post('/aas/{id}/criteria', [AaController::class, 'addCriteria'])->name('aas.criteria');
 
 
     Route::resource('lessons', LessonController::class)->only(['store', 'create']);

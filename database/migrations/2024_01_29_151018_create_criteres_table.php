@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
+            $table->float('notation');
             $table->foreignId('a_a_s_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

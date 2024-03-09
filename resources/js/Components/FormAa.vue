@@ -3,11 +3,54 @@ import { useForm } from "@inertiajs/vue3";
 import { ref, defineProps } from "vue";
 import InputError from "./InputError.vue";
 
+const isModalOpen = ref(false);
+const currentAa = ref({});
+
+const openEditAaModal = (aa) => {
+    currentAa.value = aa;
+    isModalOpen.value = true;
+};
+
 const props = defineProps({
     lesson: Object,
     skills: Array,
     aas: Array,
 });
+const submitAaEdit = () => {
+    axios.post(route('aas.update', { id: currentAa.value.id }), {
+        name: currentAa.value.name
+    }).then(() => {
+        isModalOpen.value = false;
+        // You might want to refresh the list of AAs here or show a success message
+    }).catch(error => {
+        // Handle any errors, such as displaying validation messages
+    });
+};
+
+
+const deleteAa = (aa) => {
+    axios.delete(route('aas.destroy', { id: aa.id }));
+};
+
+const addCriteria = (aa) => {
+    formAddCriteria.post(route('aas.criteria', { id: aa.id }));
+};
+
+const editCriteria = (criteria) => {
+    window.location.href = route('criteria.edit', { id: criteria.id });
+};
+
+const deleteCriteria = (criteria) => {
+    axios.delete(route('criteria.destroy', { id: criteria.id }));
+};
+
+const editSkill = (skill) => {
+    window.location.href = route('skills.edit', { id: skill.id });
+};
+
+const deleteSkill = (skill) => {
+    axios.delete(route('skills.destroy', { id: skill.id }));
+};
 
 const formAddAa = useForm({
     name: "",
@@ -56,26 +99,7 @@ const submitAA = () => {
     <div class="flex flex-wrap">
         <!-- Colonne pour le bouton Ajouter un AA -->
         <div class="w-full lg:w-1/4 p-4">
-            <!-- <div class="mb-6">
-                Bouton Ajouter un AA 
-                <a
-                    href="#"
-                    @click.prevent="addAA"
-                    class="block text-right text-[#1F2D55] font-bold transition duration-300 ease-in-out mb-6"
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        class="w-6 h-6 inline-block mr-2"
-                    >
-                        <path
-                            d="M11 11V7H13V11H17V13H13V17H11V13H7V11H11ZM12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20Z"
-                        />
-                    </svg>
-                    Ajouter un AA
-                </a>
-            </div> -->
+
         </div>
 
         <div class="w-full lg:w-1/4 p-4">
@@ -93,6 +117,10 @@ const submitAA = () => {
                             class="mb-2 py-2 px-3 rounded text-gray-700 leading-tight"
                         >
                             {{ aa.name }}
+<button @click="openEditAaModal(aa)">✐</button>
+<button @click="deleteAa(aa)">🆇</button>
+<button @click="addCriteria(aa)">+</button>
+
 
                             <ul class="">
                                 <li
@@ -100,6 +128,10 @@ const submitAA = () => {
                                     class="font-semibold text-xs"
                                 >
                                     {{ criteria.name }}
+                                    <button @click="editCriteria(criteria)">✐</button>
+                                    <button @click="deleteCriteria(criteria)">🆇</button>
+
+
                                 </li>
                             </ul>
                         </li>
@@ -119,6 +151,7 @@ const submitAA = () => {
                             placeholder="Entrez l'acquis d'apprentissage"
                             v-model="formAddAa.name"
                         />
+
                         <InputError
                             :message="formAddAa.errors.name"
                             class="mt-2"
@@ -152,6 +185,9 @@ const submitAA = () => {
                             class="mb-2 py-2 px-3 rounded text-gray-700 leading-tight"
                         >
                             {{ skill.name }}
+                            <button @click="editSkill(skill)">✐</button>
+                            <button @click="deleteSkill(skill)">🆇</button>
+
                         </li>
                     </ul>
                 </div>
@@ -169,10 +205,13 @@ const submitAA = () => {
                             placeholder="Entrez le critère de maîtrise"
                             v-model="formAddSkill.name"
                         />
+
                         <InputError
                             :message="formAddSkill.errors.name"
                             class="mt-2"
                         />
+                                                <input type="number" v-model="formAddSkill.score" placeholder="Entrez le score maximum">
+
                     </div>
                     <div class="flex justify-end">
                         <button
@@ -187,4 +226,14 @@ const submitAA = () => {
             </div>
         </div>
     </div>
+    <Modal :show="isModalOpen" @close="isModalOpen = false">
+    <template #default>
+        <!-- Form for editing the AA -->
+        <form @submit.prevent="submitAaEdit">
+            <input v-model="currentAa.name" placeholder="Nom de l'acquis d'apprentissage" />
+            <button type="submit">Submit</button>
+        </form>
+    </template>
+</Modal>
+
 </template>
