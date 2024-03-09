@@ -167,7 +167,7 @@ const addAa = () => {
 </script>
 
 <template>
-  <div class="flex flex-wrap">
+  <div class="flex flex-wrap justify-center">
     <!-- Colonne pour le bouton Ajouter un AA -->
     <div class="w-full lg:w-1/4 p-4 xl:w-3/4"></div>
 
@@ -189,7 +189,7 @@ const addAa = () => {
                 <input
                   v-model="formAa.name"
                   type="text"
-                  class="input rounded border-[#62BFC1]"
+                  class="input rounded border-[#62BFC1] text-xs"
                   placeholder="Nom de l'AA"
                 />
                 <div class="text-end w-full">
@@ -209,27 +209,24 @@ const addAa = () => {
               </div>
               <div class="flex w-full" v-else>
                 {{ aa.name }}
-                <div class="text-end w-full">
+                <div class="text-end w-full flex justify-end items-center">
                   <button
                     @click="startEditingAa(aa)"
-                    class="btn font-semibold text-xl text-white px-4 py-1.5 rounded bg-[#62BFC1]"
+                    class="text-2xl mx-1 hover:scale-105 transition duration-300 ease-in-out"
                   >
                     ✎
                   </button>
-                  <DangerButton @click="deleteAa(aa.id)">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="#FFFFFF"
-                      class="size-6"
-                    >
-                      <path
-                        d="M17 6H22V8H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V8H2V6H7V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V6ZM18 8H6V20H18V8ZM9 11H11V17H9V11ZM13 11H15V17H13V11ZM9 4V6H15V4H9Z"
-                      ></path>
-                    </svg>
-                  </DangerButton>
-                  <button @click="toggleAddCriteriaForm(aa.id)">
-                    + Critère
+                  <button
+                    class="text-2xl mx-1 hover:scale-105 transition duration-300 ease-in-out"
+                    @click="deleteAa(aa.id)"
+                  >
+                    ✖
+                  </button>
+                  <button
+                    class="bg-[#1F2D55] p-2 text-xs rounded-lg mx-1 text-white hover:scale-105 transition duration-300 ease-in-out"
+                    @click="toggleAddCriteriaForm(aa.id)"
+                  >
+                    Ajouter Critère
                   </button>
                 </div>
               </div>
@@ -240,11 +237,14 @@ const addAa = () => {
                     <input
                       v-model="formAddCriteria.name"
                       type="text"
-                      class="input rounded border-[#62BFC1]"
+                      class="input rounded border-[#62BFC1] text-xs"
                       placeholder="Nom du critère"
                     />
-                    <button @click="addCriteria(aa)">
-                      +
+                    <button
+                      class="bg-[#1F2D55] p-2 ml-4 text-xs text-white rounded-lg hover:scale-105 transition duration-300 ease-in-out"
+                      @click="addCriteria(aa)"
+                    >
+                      Ajouter le critère
                     </button>
                   </div>
                 </li>
@@ -256,7 +256,7 @@ const addAa = () => {
                     <input
                       v-model="formCriteria.name"
                       type="text"
-                      class="input rounded border-[#62BFC1]"
+                      class="input rounded border-[#62BFC1] text-xs"
                       placeholder="Nom du critère"
                     />
                     <button
@@ -279,12 +279,12 @@ const addAa = () => {
                     <div class="text-start pl-4">
                       <button
                         @click="startEditingCriteria(criteria, aa.id)"
-                        class="btn font-semibold mx-0.5 text-md w-5 h-5 text-white rounded bg-[#62BFC1]"
+                        class="btn font-semibold mx-0.5 text-md w-5 h-5 text-white rounded bg-[#62BFC1] hover:scale-105 transition duration-300 ease-in-out"
                       >
                         ✎
                       </button>
                       <button
-                        class="btn font-semibold text-md w-5 h-5 text-white rounded bg-[#ff3f3f]"
+                        class="btn font-semibold text-md w-5 h-5 text-white rounded bg-[#ff3f3f] hover:scale-105 transition duration-300 ease-in-out"
                         @click="deleteCriteria(criteria.id)"
                       >
                         x
@@ -306,7 +306,7 @@ const addAa = () => {
             <input
               type="text"
               id="aaAdd"
-              class="shadow border-[#62BFC1] rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-[#62BFC1]"
+              class="shadow border-[#62BFC1] rounded w-full py-2 px-3 text-gray-700 text-xs leading-tight focus:outline-none focus:shadow-outline focus:border-[#62BFC1]"
               placeholder="Entrez l'acquis d'apprentissage"
               v-model="formAddAa.name"
             />
@@ -326,7 +326,7 @@ const addAa = () => {
       </div>
     </div>
 
-    <div class="w-full lg:w-1/4 p-4 xl:w-2/5 xl:text-center">
+    <div class="w-full lg:w-1/4 p-4 xl:w-2/5 xl:text-center break-words">
       <div class="bg-white shadow sm:rounded-md p-4">
         <div class="mb-6">
           <div
@@ -340,27 +340,64 @@ const addAa = () => {
               :key="skill.id"
               class="mb-2 py-2 px-3 rounded text-gray-700 leading-tight"
             >
-              <div v-if="editingSkillId === skill.id">
+              <div
+                v-if="editingSkillId === skill.id"
+                class="flex flex-col items-center justify-center"
+              >
                 <!-- Les champs d'édition s'affichent pour modifier le skill -->
+                <span class="font-bold my-1">Nom</span>
                 <input
+                  class="input rounded border-[#62BFC1] text-xs mb-2"
                   v-model="formEditSkill.name"
                   placeholder="Nom du skill"
                 />
+                <span class="font-bold my-1">Note</span>
                 <input
+                  class="input rounded border-[#62BFC1] text-xs mb-2"
                   v-model="formEditSkill.notation"
                   placeholder="Notation"
                   type="number"
                 />
-                <button class="text-2xl" @click="saveSkill(skill.id)">✓</button>
-                <button @click="stopEditingSkill">×</button>
+                <div>
+                  <button
+                    class="text-xs p-2 mx-1 bg-[#1F2D55] rounded-lg text-white hover:scale-105 transition duration-300 ease-in-out"
+                    @click="saveSkill(skill.id)"
+                  >
+                    Valider
+                  </button>
+                  <button
+                    class="text-xs p-2 mx-1 bg-red-600 rounded-lg text-white hover:scale-105 transition duration-300 ease-in-out"
+                    @click="stopEditingSkill"
+                  >
+                    ✖
+                  </button>
+                </div>
               </div>
-              <div v-else>
+              <div
+                v-else
+                class="w-full flex flex-col items-center justify-center"
+              >
                 <!-- Affichage normal du skill -->
-                {{ skill.name }} : {{ skill.notation }}
-                <button @click="startEditingSkill(skill)">✐</button>
-                <DangerButton @click="deleteSkill(skill.id)">
-                  <!-- Icône de suppression -->
-                </DangerButton>
+                <p class="flex flex-col w-3/5">
+                  <span class="border-b-2 text-xs border-slate-800 mb-2 pb-2">{{
+                    skill.name
+                  }}</span>
+                  <span class="text-base font-bold">/{{ skill.notation }}</span>
+                </p>
+                <div class="flex space-x-2">
+                  <button
+                    class="hover:scale-105"
+                    @click="startEditingSkill(skill)"
+                  >
+                    ✐
+                  </button>
+                  <button
+                    class="hover:scale-105"
+                    @click="deleteSkill(skill.id)"
+                  >
+                    ✖
+                  </button>
+                </div>
               </div>
             </li>
           </ul>
@@ -375,7 +412,7 @@ const addAa = () => {
             <input
               type="text"
               id="skillAdd"
-              class="shadow border-[#62BFC1] rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-[#62BFC1]"
+              class="shadow my-2 border-[#62BFC1] rounded w-full py-2 px-3 text-gray-700 leading-tight text-xs focus:outline-none focus:shadow-outline focus:border-[#62BFC1]"
               placeholder="Entrez le critère de maîtrise"
               v-model="formAddSkill.name"
             />
@@ -385,10 +422,11 @@ const addAa = () => {
               type="number"
               v-model="formAddSkill.notation"
               placeholder="Entrez le score maximum"
+              class="shadow my-2 border-[#62BFC1] rounded w-full py-2 px-3 text-xs text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-[#62BFC1]"
             />
             <InputError :message="formAddSkill.errors.notation" class="mt-2" />
           </div>
-          <div class="flex justify-end">
+          <div class="flex justify-center">
             <button
               type="submit"
               @click.prevent="addSkill"

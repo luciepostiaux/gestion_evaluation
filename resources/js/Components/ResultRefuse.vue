@@ -84,7 +84,7 @@ const validateResult = () => {
 
 <template>
   <Link
-    class="cursor-pointer text-white bg-slate-800 p-4 m-4 rounded-lg hover:scale-105"
+    class="cursor-pointer text-white bg-[#1F2D55] p-4 m-4 rounded-lg hover:scale-105"
     :href="route('lessons.index', lesson.id)"
     >{{ lesson.name }}
   </Link>

@@ -109,9 +109,9 @@ const props = defineProps({
                         studentId: student.id,
                       })
                     "
-                    class="ml-4 text-blue-500 hover:text-blue-700"
+                    class="ml-4 text-xs p-2 bg-[#1F2D55] hover:scale-105 transition duration-300 ease-in-out text-white rounded-lg"
                   >
-                    Noter
+                    Evaluer
                   </Link>
                 </div>
               </div>

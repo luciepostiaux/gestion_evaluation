@@ -16,9 +16,12 @@ const props = defineProps({
         Ajout des aa et critères
       </h2>
     </template>
-    <Link class="cursor-pointer" :href="route('lessons.index', lesson.id)"
-      >{{ lesson.name }}
-    </Link>
+    <div
+      class="cursor-pointer w-fit bg-[#1F2D55] p-4 m-2 rounded-lg text-white hover:scale-105 transition duration-300 ease-in-out"
+    >
+      <Link :href="route('lessons.index', lesson.id)">{{ lesson.name }} </Link>
+    </div>
+
     <FormAa :lesson="props.lesson" :skills="props.skills" :aas="props.aas" />
   </AppLayout>
 </template>

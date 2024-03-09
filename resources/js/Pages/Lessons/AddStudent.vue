@@ -40,10 +40,12 @@ const remove = (id) => {
         Liste des élèves
       </h2>
     </template>
-    <Link class="cursor-pointer" :href="route('lessons.index', lesson.id)"
-      >{{ lesson.name }}
-    </Link>
-    <div class="md:grid md:grid-cols-2 md:gap-6">
+    <div
+      class="cursor-pointer w-fit bg-[#1F2D55] p-4 m-2 rounded-lg text-white hover:scale-105 transition duration-300 ease-in-out"
+    >
+      <Link :href="route('lessons.index', lesson.id)">{{ lesson.name }} </Link>
+    </div>
+    <div class="md:grid md:grid-cols-2 md:gap-6 mt-4">
       <!-- Première colonne pour tous les élèves -->
       <ul class="divide-y bg-white shadow sm:rounded-md">
         <h2

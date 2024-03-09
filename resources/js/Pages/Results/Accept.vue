@@ -89,7 +89,7 @@ const validateResult = () => {
       <h2 class="leading-tight">Fiche de réussite</h2>
     </template>
     <Link
-      class="cursor-pointer text-white bg-slate-800 p-4 m-4 rounded-lg hover:scale-105"
+      class="cursor-pointer text-white bg-[#1F2D55] p-4 m-4 rounded-lg hover:scale-105"
       :href="route('lessons.index', lesson.id)"
       >{{ lesson.name }}
     </Link>
@@ -210,7 +210,7 @@ const validateResult = () => {
       <p class="italic mt-4 mb-4 text-center">
         L'étudiant.e a
         <span class="font-bold underline">réussi</span> avec une note de
-        {{ props.note }} %
+        <span class="font-bold underline">{{ props.note }} %</span>
       </p>
     </div>
     <button

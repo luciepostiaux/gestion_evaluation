@@ -154,7 +154,7 @@ const calculateFinalResult = () => {
 
 <template>
   <Link
-    class="cursor-pointer text-white bg-slate-800 p-4 m-4 rounded-lg hover:scale-105"
+    class="cursor-pointer text-white bg-[#1F2D55] p-4 m-4 rounded-lg hover:scale-105"
     :href="route('lessons.index', lesson.id)"
     >{{ lesson.name }}
   </Link>
@@ -182,7 +182,7 @@ const calculateFinalResult = () => {
   </div>
   <div class="evaluation-container">
     <div class="aas-container text-center">
-      <div v-for="aa in aas" :key="aa.id" class="aa text-start">
+      <div v-for="aa in aas" :key="aa.id" class="aa text-center">
         <h1 class="text-2xl font-bold">AA : {{ aa.name }}</h1>
         <ul>
           <li
@@ -207,6 +207,7 @@ const calculateFinalResult = () => {
               <div class="flex w-full text-center items-center justify-center">
                 <label class="flex text-xs flex-col items-center mr-2">
                   <input
+                    class="hover:scale-105 transition duration-600 ease-in-out"
                     type="radio"
                     :name="`criteria-${criteria.id}`"
                     value="1"
@@ -216,6 +217,7 @@ const calculateFinalResult = () => {
                 </label>
                 <label class="flex flex-col text-xs items-center ml-2">
                   <input
+                    class="hover:scale-105 transition duration-600 ease-in-out"
                     type="radio"
                     :name="`criteria-${criteria.id}`"
                     value="0"
@@ -225,7 +227,7 @@ const calculateFinalResult = () => {
                 </label>
               </div>
               <button
-                class="text-xs bg-green-600 p-2 mt-2 rounded-lg"
+                class="text-xs bg-[#1F2D55] text-white p-2 mt-2 rounded-lg hover:scale-105 transition duration-600 ease-in-out"
                 @click="saveCriteriaStudent(criteria.studentNote.id)"
               >
                 Valider
@@ -236,7 +238,7 @@ const calculateFinalResult = () => {
               class="w-1/6 flex items-center jsutify-center text-center"
             >
               <button
-                class="text-center w-full text-3xl"
+                class="text-center w-full text-3xl hover:scale-105 transition duration-600 ease-in-out"
                 @click="startEditingCriteriaStudent(criteria)"
               >
                 ✐
@@ -246,51 +248,93 @@ const calculateFinalResult = () => {
         </ul>
       </div>
       <button
-        class="p-4 bg-slate-800 text-white rounded-lg my-2"
+        class="p-4 bg-[#1F2D55] text-white rounded-lg my-2 hover:scale-105 transition duration-600 ease-in-out"
         @click="evaluateStudent"
       >
         Évaluation finale
       </button>
-      <div v-if="showBanner" class="alert-banner">
-        Certains critères ne sont pas évalués.
+      <div v-if="showBanner">
+        <div
+          class="bottom-0 right-0 m-4 z-50 bg-[#1F2D55] text-white rounded-xl fixed hover:scale-105 transition duration-600 ease-in-out"
+        >
+          <p class="p-4">
+            Certains critères ne sont pas évalués.
+          </p>
+          <button
+            class="absolute top-0 right-0 text-xl mr-1 w-full h-full flex items-start justify-end"
+            @click="showBanner = false"
+          >
+            ×
+          </button>
+        </div>
       </div>
-      <div v-if="showRefuseBanner" class="alert-banner">
-        L'élève est déjà en refus.
+      <div v-if="showRefuseBanner">
+        <div
+          class="bottom-0 right-0 m-4 z-50 bg-[#1F2D55] text-white rounded-xl fixed hover:scale-105 transition duration-600 ease-in-out"
+        >
+          <p class="p-4">
+            L'élève est déjà en refus
+          </p>
+          <button
+            class="bottom-0 right-0 m-4 z-50 bg-[#1F2D55] text-white rounded-xl fixed hover:scale-105 transition duration-600 ease-in-out"
+            @click="showRefuseBanner = false"
+          >
+            ×
+          </button>
+        </div>
       </div>
-      <div v-if="showAcceptBanner" class="alert-banner">
-        L'élève a déjà réussi.
+      <div v-if="showAcceptBanner">
+        <div
+          class="bottom-0 right-0 m-4 z-50 bg-[#1F2D55] text-white rounded-xl fixed hover:scale-105 transition duration-600 ease-in-out"
+        >
+          <p class="p-4">
+            L'élève a déjà réussi
+          </p>
+          <button
+            class="absolute top-0 right-0 text-xl mr-1 w-full h-full flex items-start justify-end"
+            @click="showAcceptBanner = false"
+          >
+            ×
+          </button>
+        </div>
       </div>
     </div>
     <div v-if="showSkills" class="border-2 border-slate-800 text-center w-full">
       <h2 class="text-4xl">Skills</h2>
-      <div v-for="skill in skills" :key="skill.id" class="skill">
-        <div>
-          {{ skill.name }} :
-
-          <div v-if="editingSkillStudentId === skill.id">
-            <input
-              class="text-end"
-              type="number"
-              v-model="formEditSkillStudent.note"
-            />/ {{ skill.notation }}
-            <button
-              class="mx-2 p-4 bg-green-600 rounded-lg"
-              @click="saveSkillStudent(skill.studentNote.id)"
-            >
-              Valider
-            </button>
-            <p v-if="skillNoteError" class="text-red-500">
-              {{ skillNoteError }}
+      <div class="flex">
+        <div v-for="skill in skills" :key="skill.id" class="max-w-[20%]">
+          <div
+            class="flex flex-col bg-slate-200 shadow-lg border p-2 rounded-lg mx-2 text-xs"
+          >
+            <p class="pr-2 border-b-2 mb-2 border-slate-800 break-words">
+              {{ skill.name }}
             </p>
-          </div>
-          <div v-else>
-            {{ skill.studentNote.note }}/ {{ skill.notation }}
-            <button @click="startEditingSkillStudent(skill)">✐</button>
+            <div v-if="editingSkillStudentId === skill.id">
+              <input
+                class=""
+                type="number"
+                v-model="formEditSkillStudent.note"
+              />
+              <p class="ml-2 text-base font-bold">/ {{ skill.notation }}</p>
+              <button
+                class="mx-2 p-4 bg-[#1F2D55] rounded-lg text-white hover:scale-105"
+                @click="saveSkillStudent(skill.studentNote.id)"
+              >
+                Valider
+              </button>
+              <p v-if="skillNoteError" class="text-red-500">
+                {{ skillNoteError }}
+              </p>
+            </div>
+            <div v-else class="ml-2 text-base font-bold">
+              {{ skill.studentNote.note }}/ {{ skill.notation }}
+              <button @click="startEditingSkillStudent(skill)">✐</button>
+            </div>
           </div>
         </div>
       </div>
       <button
-        class="p-4 bg-slate-800 text-white rounded-lg my-2"
+        class="p-4 bg-[#1F2D55] text-white rounded-lg my-2"
         @click="calculateFinalResult"
       >
         Calculer le résultat final
