@@ -73,28 +73,20 @@ Route::middleware([
     );
     Route::delete('/students/{students}', [StudentController::class, 'destroy'])->name('students.destroy');
     Route::get('/students/{courseId}/{studentId}/note', [StudentController::class, 'note'])->name('students.note');
-
-    // Pour CriteriaStudent
     Route::put('/CriteriaStudents/{CriteriaStudent}', [CriteriaStudentController::class, 'update'])->name('criteriastudents.update');
-
     Route::put('/studentlesson/update/{lessonId}/{studentId}', [LessonStudentController::class, 'update'])->name('studentlesson.update');
     Route::put('/studentlesson/updaterefuse/{lessonId}/{studentId}', [LessonStudentController::class, 'updaterefuse'])->name('studentlesson.updaterefuse');
     Route::put('/studentlesson/updateaccept/{lessonId}/{studentId}', [LessonStudentController::class, 'updateaccept'])->name('studentlesson.updateaccept');
-
-    // Pour SkillStudent
     Route::put('/SkillStudents/{SkillStudent}', [SkillStudentController::class, 'update'])->name('skillstudents.update');
     Route::get('/results/adjournement/{courseId}/{studentId}', [ResultController::class, 'adjournement'])->name('results.adjournement');
-
     Route::get('/results/refuse/{courseId}/{studentId}', [ResultController::class, 'refuse'])->name('results.refuse');
     Route::get('/results/accept/{studentId}/{lessonId}', [ResultController::class, 'accept'])->name('results.accept');
-
     Route::get('aas/lessons/{id}', [AaController::class, 'edit'])->name('aas.edit');
     Route::get('lessons/{id?}', [LessonController::class, 'index'])->name('lessons.index');
     Route::put('/sections/{section}', [SectionController::class, 'update'])->name('sections.update');
+    Route::put('/students/{student}', [StudentController::class, 'update'])->name('students.update');
     Route::put('/aas/{aa}', [AaController::class, 'update'])->name('aas.update');
     Route::put('/skills/{skill}', [SkillController::class, 'update'])->name('skills.update');
-
     Route::put('/criterias/{criteria}', [AaController::class, 'updateCriteria'])->name('aas.updateCriteria');
-
     Route::get('/sections/{section}/lessons', [LessonController::class, 'indexBySection'])->name('sections.lessons.index');
 });

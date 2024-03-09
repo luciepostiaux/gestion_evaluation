@@ -65,6 +65,7 @@ class StudentController extends Controller
 
     public function update(StoreStudentRequest $request, $id)
     {
+
         $student = Student::findOrFail($id);
         $student->update($request->validated());
 

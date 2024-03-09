@@ -27,7 +27,7 @@ class StoreStudentRequest extends FormRequest
                 'max:120'
             ],
             'lastname' => ['required', 'min:2', 'max:120'],
-            'section_id' => ['required', 'exists:sections,id'],
+            'section_id' => ['exists:sections,id'],
 
         ];
     }
