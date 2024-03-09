@@ -10,7 +10,6 @@ class Criteria extends Model
     use HasFactory;
     protected $fillable = [
         'name',
-        'notation',
     ];
     public function criteriastudents()
     {

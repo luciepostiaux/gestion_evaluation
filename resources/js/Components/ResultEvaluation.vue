@@ -1,292 +1,300 @@
 <script setup>
-import { ref } from "vue";
 import { Head, Link, router } from "@inertiajs/vue3";
 import ApplicationMark from "@/Components/ApplicationMark.vue";
+import { useForm } from "@inertiajs/vue3";
+import { ref, defineProps, computed } from "vue";
+import InputError from "./InputError.vue";
+import DangerButton from "@/Components/DangerButton.vue";
+const props = defineProps({
+  lesson: Object,
+  student: Object,
+  aas: Array,
+  skills: Array,
+  lessonStatus: Number, // Ajoutez cette ligne
+});
+const showRefuseBanner = ref(false);
+const showAcceptBanner = ref(false);
+
+const showBanner = ref(false);
+const showSkills = ref(false);
+const editingCriteriaStudentId = ref(null);
+const formEditCriteriaStudent = useForm({
+  note: "",
+  criteria_id: "",
+  student_id: props.student.id,
+});
+
+const startEditingCriteriaStudent = (criteria) => {
+  console.log(criteria);
+  editingCriteriaStudentId.value = criteria.id; // Modifiez cette ligne
+  formEditCriteriaStudent.note = criteria.studentNote.note;
+  formEditCriteriaStudent.student_id = props.student.id;
+  formEditCriteriaStudent.criteria_id = criteria.id;
+};
+
+const stopEditingCriteriaStudent = () => {
+  editingCriteriaStudentId.value = null;
+};
+const saveCriteriaStudent = () => {
+  formEditCriteriaStudent.put(
+    route("criteriastudents.update", editingCriteriaStudentId.value),
+    {
+      onSuccess: () => stopEditingCriteriaStudent(),
+    }
+  );
+};
+
+const editingSkillStudentId = ref(null);
+const formEditSkillStudent = useForm({
+  note: null,
+  skill_id: "",
+  student_id: props.student.id,
+});
+
+const startEditingSkillStudent = (skill) => {
+  editingSkillStudentId.value = skill.id;
+  formEditSkillStudent.note = skill.studentNote.note;
+  formEditSkillStudent.student_id = props.student.id;
+  formEditSkillStudent.skill_id = skill.id;
+  console.log(formEditSkillStudent);
+};
+
+const stopEditingSkillStudent = () => {
+  editingSkillStudentId.value = null;
+};
+const skillNoteError = ref("");
+
+const saveSkillStudent = () => {
+  const skill = props.skills.find(
+    (skill) => skill.id === editingSkillStudentId.value
+  );
+  if (formEditSkillStudent.note > skill.notation) {
+    skillNoteError.value =
+      "La note ne peut pas être supérieure à la notation maximale du skill.";
+    return;
+  }
+
+  skillNoteError.value = "";
+  formEditSkillStudent.put(
+    route("skillstudents.update", editingSkillStudentId.value),
+    {
+      onSuccess: () => stopEditingSkillStudent(),
+    }
+  );
+};
+
+const evaluateStudent = () => {
+  const allEvaluated = props.aas.every((aa) =>
+    aa.criteria.every(
+      (criteria) => criteria.studentNote && criteria.studentNote.note !== null
+    )
+  );
+  console.log(props.lessonStatus);
+  const anyNonAcquired = props.aas.some((aa) =>
+    aa.criteria.some(
+      (criteria) =>
+        criteria.studentNote && parseInt(criteria.studentNote.note, 10) === 0
+    )
+  );
+  if (props.lessonStatus === 3) {
+    showAcceptBanner.value = true;
+  } else if (!allEvaluated) {
+    showBanner.value = true;
+    showSkills.value = false;
+  } else if (anyNonAcquired) {
+    showSkills.value = false;
+    // Utilisez lessonStatus pour déterminer la route à suivre
+    if (props.lessonStatus === 0) {
+      router.get(
+        route("results.adjournement", [props.lesson.id, props.student.id])
+      );
+    } else if (props.lessonStatus === 1) {
+      router.get(route("results.refuse", [props.lesson.id, props.student.id]));
+    } else if (props.lessonStatus === 2) {
+      showRefuseBanner.value = true;
+    }
+  } else {
+    showBanner.value = false;
+    showSkills.value = true;
+  }
+};
+const calculateFinalResult = () => {
+  const allSkillsEvaluated = props.skills.every(
+    (skill) => skill.studentNote && skill.studentNote.note !== null
+  );
+
+  if (!allSkillsEvaluated) {
+    alert(
+      "Tous les skills doivent être évalués pour calculer le résultat final."
+    );
+    return;
+  }
+
+  const basePercentage = 50;
+  let totalWeightedScores = 0;
+  let totalWeights = 0;
+
+  props.skills.forEach((skill) => {
+    const weight = skill.notation;
+    const score = (skill.studentNote.note / skill.notation) * weight;
+    totalWeightedScores += score;
+    totalWeights += weight;
+  });
+
+  const skillPercentage = (totalWeightedScores / totalWeights) * 50; // Pour obtenir le pourcentage des 50% restants
+  const finalResult = basePercentage + skillPercentage;
+  router.get(
+    route("results.accept", {
+      studentId: props.student.id,
+      lessonId: props.lesson.id,
+    }) + `?finalResult=${finalResult.toFixed(2)}`
+  );
+};
 </script>
 
 <template>
-    <div class="my-6 border border-black p-4">
-        <div class="flex">
-            <!-- Rectangle de gauche -->
-            <div class="w-1/2 border border-black pr-2 py-2">
-                <div class="flex items-left justify-left h-full">
-                    <Link
-                        :href="route('dashboard')"
-                        class="flex items-center h-full"
-                    >
-                        <ApplicationMark class="block h-full w-auto" />
-                    </Link>
-                </div>
-            </div>
-            <!-- Rectangle de droite -->
-            <div class="w-1/2 border border-black pl-2 py-2 font-light">
-                <p class="text-left">Nom et prénom de l'étudiante :</p>
-                <p class="text-left">Section :</p>
-                <p class="text-left">Unité d'enseignement :</p>
-                <p class="text-left">Code de l'UE :</p>
-                <p class="text-left">Nom du/des chargé(e)s de cours :</p>
-                <p class="text-left">Année scolaire :</p>
-            </div>
-        </div>
-
-        <!-- Bloc de données -->
-        <div class="border border-black">
-            <!-- Première ligne -->
-            <div class="flex border-b border-black h-12">
-                <div class="w-full border-r border-black p-2">
-                    <p class="text-black font-bold text-poppins items-left">
-                        POUR ATTEINDRE LE SEUIL DE REUSSITE, L'ETUDIANT.E
-                        PROUVERA QU'IL/ELLE EST CAPABLE DE :
-                    </p>
-                </div>
-            </div>
-            <!-- Lignes suivantes -->
-            <div class="flex h-12 border-b border-black">
-                <div class="w-full border-r border-black p-2">
-                    <span class="text-center italic text-gray-500"
-                        >Indiquez ici le chapeau repris au dessus des acquis
-                        d'apprentissage dans le dossier pédagogique</span
-                    >
-                </div>
-                <div
-                    class="w-1/6 flex justify-end items-center border-r border-black p-2 font-bold"
-                >
-                    <span>Acquis</span>
-                </div>
-                <div
-                    class="w-1/6 flex justify-end items-center border-r border-black p-2 font-bold"
-                >
-                    <span>Non acquis</span>
-                </div>
-            </div>
-            <div class="flex h-12 border-b border-black">
-                <div class="w-1/2 border-r border-black p-2">
-                    <span class="text-center h-8 font-bold underline"
-                        >AA :
-                    </span>
-                </div>
-                <div class="w-1/2 border-r border-black p-2">
-                    <span class="text-center italic"> </span>
-                </div>
-                <div
-                    class="w-1/6 flex justify-end items-center border-r border-black p-2 font-bold"
-                >
-                    <span></span>
-                </div>
-                <div
-                    class="w-1/6 flex justify-end items-center border-r border-black p-2 font-bold"
-                >
-                    <span></span>
-                </div>
-            </div>
-
-            <div class="flex h-12 border-b border-black">
-                <div class="w-1/2 border-r border-black p-2">
-                    <span class="text-center font-bold underline"> </span>
-                </div>
-                <div class="w-1/2 border-r border-black p-2">
-                    <span class="text-center italic"> </span>
-                </div>
-                <div
-                    class="w-1/6 flex justify-end items-center border-r border-black p-2 font-bold"
-                >
-                    <span></span>
-                </div>
-                <div
-                    class="w-1/6 flex justify-end items-center border-r border-black p-2 font-bold"
-                >
-                    <span></span>
-                </div>
-            </div>
-
-            <div class="flex h-12 border-b border-black">
-                <div class="w-1/2 border-r border-black p-2">
-                    <span class="text-center font-bold underline"> </span>
-                </div>
-                <div class="w-1/2 border-r border-black p-2">
-                    <span class="text-center italic"> </span>
-                </div>
-                <div
-                    class="w-1/6 flex justify-end items-center border-r border-black p-2 font-bold"
-                >
-                    <span></span>
-                </div>
-                <div
-                    class="w-1/6 flex justify-end items-center border-r border-black p-2 font-bold"
-                >
-                    <span></span>
-                </div>
-            </div>
-
-            <div class="flex h-12 border-b border-black">
-                <div class="w-1/2 border-r border-black p-2">
-                    <span class="text-center font-bold underline"> </span>
-                </div>
-                <div class="w-1/2 border-r border-black p-2">
-                    <span class="text-center italic"> </span>
-                </div>
-                <div
-                    class="w-1/6 flex justify-end items-center border-r border-black p-2 font-bold"
-                >
-                    <span></span>
-                </div>
-                <div
-                    class="w-1/6 flex justify-end items-center border-r border-black p-2 font-bold"
-                >
-                    <span></span>
-                </div>
-            </div>
-
-            <div class="flex h-12 border-b border-black">
-                <div class="w-1/2 border-r border-black p-2">
-                    <span class="text-center font-bold underline"> </span>
-                </div>
-                <div class="w-1/2 border-r border-black p-2">
-                    <span class="font-bold">
-                        Décision pour le AA : tous les critères
-                    </span>
-                </div>
-                <div
-                    class="w-1/6 flex justify-end items-center border-r border-black p-2 font-bold"
-                ></div>
-                <div
-                    class="w-1/6 flex justify-end items-center border-r border-black p-2 font-bold"
-                >
-                    <span></span>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-3">
-                <div class="border border-black p-2 text-center">
-                    <p class="font-bold">Tout les AA sont "aquis"</p>
-                    <p class="font-bold">REUSSITE</p>
-                    <p class="font-light italic">→ Voir degré de maîtrise</p>
-                </div>
-                <div class="border border-black p-2 text-center">
-                    <p class="font-bold">
-                        Au moins un AA est non-aquis
-                        <span class="font-light italic text-xs"
-                            >(en 1ère session)</span
-                        >
-                    </p>
-                    <p class="font-bold">AJOURNEMENT</p>
-                    <p class="font-light italic">
-                        → Voir justification ajournement
-                    </p>
-                </div>
-                <div class="border border-black p-2 text-center">
-                    <p class="font-bold">
-                        Au moins un AA est non-aquis
-                        <span class="font-light italic text-xs"
-                            >(en 2ème session)</span
-                        >
-                    </p>
-                    <p class="font-bold">REFUS</p>
-                    <p class="font-light italic">→ Voir justification refus</p>
-                </div>
-            </div>
-            <div class="flex border-b border-black h-12">
-                <div class="w-full border-r text-center border-black p-2">
-                    <p class="text-black font-bold text-poppins items-center">
-                        DEGRE DE MAISTRISE (> ou = à 50%)
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="border border-black mt-6">
-            <div class="w-full border-r text-left border-black p-2">
-                <p class="text-black font-bold text-poppins items-left">
-                    0 = Acquis, 1 = Bien, 2 = TB, 3 = TTB, 4 = Excellent, 5 =
-                    Parfait
-                </p>
-            </div>
-            <div class="grid grid-cols-3">
-                <div class="border border-black p-2 text-left">
-                    <span class="font-bold underline">Critères</span>
-                    <span
-                        class="font-light under italic mx-1 text-gray-600 text-xs"
-                        >Tels qu'au DP</span
-                    >
-                </div>
-                <div class="border border-black p-2 text-left">
-                    <span class="font-bold underline">Indicateurs : </span>
-                    <span
-                        class="font-light under italic mx-1 text-gray-600 text-xs"
-                        >(des indicateurs de réussite, pour chacun des critères,
-                        PEUVENT êtres ajoutés par le chargé de cours)</span
-                    >
-                </div>
-                <div class="border border-black p-2 text-left">
-                    <p class="font-bold underline">Niveau de maîtrise :</p>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-3">
-                <div class="border border-black p-2 text-left">
-                    <p>N°1 :</p>
-                </div>
-                <div class="border border-black p-2 text-left">
-                    <p></p>
-                </div>
-                <div class="border border-black p-2 text-left">
-                    <p></p>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-3">
-                <div class="border border-black p-2 text-left">
-                    <p>N°2 :</p>
-                </div>
-                <div class="border border-black p-2 text-left">
-                    <p></p>
-                </div>
-                <div class="border border-black p-2 text-left">
-                    <p></p>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-3">
-                <div class="border border-black p-2 text-left">
-                    <p>N°3 :</p>
-                </div>
-                <div class="border border-black p-2 text-left">
-                    <p></p>
-                </div>
-                <div class="border border-black p-2 text-left">
-                    <p></p>
-                </div>
-            </div>
-
-            <div class="grid bg-gray-300 grid-cols-3">
-                <div class="border border-black p-2 font-bold text-left">
-                    <p>RESULTAT FINAL :</p>
-                </div>
-                <div
-                    class="border border-black p-2 text-xs font-bold text-left"
-                >
-                    <p>
-                        TOUS les AA sont atteint et le degré de maîtrise permet
-                        de calculer la côte suivante (>50%)
-                    </p>
-                </div>
-                <div class="border border-black p-2 text-center font-bold">
-                    <p>/100</p>
-                </div>
-            </div>
-
-            <div class="w-full border-r text-left border-black p-2">
-                <p
-                    class="text-black font-bold text-poppins items-left mb-8 underline"
-                >
-                    Date :
-                </p>
-                <p
-                    class="text-black font-bold mb-20 text-poppins items-left underline"
-                >
-                    Signature du/des chargé(e)/s de cours :
-                </p>
-            </div>
-        </div>
+  <Link
+    class="cursor-pointer text-white bg-slate-800 p-4 m-4 rounded-lg hover:scale-105"
+    :href="route('lessons.index', lesson.id)"
+    >{{ lesson.name }}
+  </Link>
+  <div class="flex flex-row border-2 border-black p-8 mt-4">
+    <!-- Rectangle de gauche -->
+    <div class="w-1/2 border-black pr-2 py-2">
+      <div class="flex items-left justify-left h-full">
+        <Link :href="route('dashboard')" class="flex items-center w-full">
+          <ApplicationMark class="block h-full w-auto" />
+        </Link>
+      </div>
     </div>
+    <!-- Rectangle de droite -->
+    <div class="w-1/2 border border-black pl-2 py-2 font-light">
+      <p class="text-left">
+        Nom et prénom de l'étudiante : {{ student.firstname }}
+        {{ student.lastname }}
+      </p>
+      <p class="text-left">Section :</p>
+      <p class="text-left">Unité d'enseignement :{{ lesson.name }}</p>
+      <p class="text-left">Code de l'UE :</p>
+      <p class="text-left">Nom du/des chargé(e)s de cours :</p>
+      <p class="text-left">Année scolaire :</p>
+    </div>
+  </div>
+  <div class="evaluation-container">
+    <div class="aas-container text-center">
+      <div v-for="aa in aas" :key="aa.id" class="aa text-start">
+        <h1 class="text-2xl font-bold">AA : {{ aa.name }}</h1>
+        <ul>
+          <li
+            class="flex border-2 border-slate-800 p-4 my-2"
+            v-for="criteria in aa.criteria"
+            :key="criteria.id"
+          >
+            <span
+              class="w-2/6 border-r-2 mr-2 border-slate-800 flex items-center justify-start"
+            >
+              Critère : {{ criteria.name }}
+            </span>
+            <span
+              class="w-3/6 overflow-y-scroll text-xs border-r-2 mr-2 items-center justify-center flex border-slate-800"
+            >
+              {{ criteria.description }}</span
+            >
+            <div
+              class="text-center w-1/6"
+              v-if="editingCriteriaStudentId === criteria.id"
+            >
+              <div class="flex w-full text-center items-center justify-center">
+                <label class="flex text-xs flex-col items-center mr-2">
+                  <input
+                    type="radio"
+                    :name="`criteria-${criteria.id}`"
+                    value="1"
+                    v-model="formEditCriteriaStudent.note"
+                  />
+                  Acquis
+                </label>
+                <label class="flex flex-col text-xs items-center ml-2">
+                  <input
+                    type="radio"
+                    :name="`criteria-${criteria.id}`"
+                    value="0"
+                    v-model="formEditCriteriaStudent.note"
+                  />
+                  Non Acquis
+                </label>
+              </div>
+              <button
+                class="text-xs bg-green-600 p-2 mt-2 rounded-lg"
+                @click="saveCriteriaStudent(criteria.studentNote.id)"
+              >
+                Valider
+              </button>
+            </div>
+            <div
+              v-else
+              class="w-1/6 flex items-center jsutify-center text-center"
+            >
+              <button
+                class="text-center w-full text-3xl"
+                @click="startEditingCriteriaStudent(criteria)"
+              >
+                ✐
+              </button>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <button
+        class="p-4 bg-slate-800 text-white rounded-lg my-2"
+        @click="evaluateStudent"
+      >
+        Évaluation finale
+      </button>
+      <div v-if="showBanner" class="alert-banner">
+        Certains critères ne sont pas évalués.
+      </div>
+      <div v-if="showRefuseBanner" class="alert-banner">
+        L'élève est déjà en refus.
+      </div>
+      <div v-if="showAcceptBanner" class="alert-banner">
+        L'élève a déjà réussi.
+      </div>
+    </div>
+    <div v-if="showSkills" class="border-2 border-slate-800 text-center w-full">
+      <h2 class="text-4xl">Skills</h2>
+      <div v-for="skill in skills" :key="skill.id" class="skill">
+        <div>
+          {{ skill.name }} :
+
+          <div v-if="editingSkillStudentId === skill.id">
+            <input
+              class="text-end"
+              type="number"
+              v-model="formEditSkillStudent.note"
+            />/ {{ skill.notation }}
+            <button
+              class="mx-2 p-4 bg-green-600 rounded-lg"
+              @click="saveSkillStudent(skill.studentNote.id)"
+            >
+              Valider
+            </button>
+            <p v-if="skillNoteError" class="text-red-500">
+              {{ skillNoteError }}
+            </p>
+          </div>
+          <div v-else>
+            {{ skill.studentNote.note }}/ {{ skill.notation }}
+            <button @click="startEditingSkillStudent(skill)">✐</button>
+          </div>
+        </div>
+      </div>
+      <button
+        class="p-4 bg-slate-800 text-white rounded-lg my-2"
+        @click="calculateFinalResult"
+      >
+        Calculer le résultat final
+      </button>
+    </div>
+  </div>
 </template>

@@ -2,10 +2,13 @@
 
 use App\Http\Controllers\AaController;
 use App\Http\Controllers\CriteriaController;
+use App\Http\Controllers\CriteriaStudentController;
 use App\Http\Controllers\LessonController;
+use App\Http\Controllers\LessonStudentController;
 use App\Http\Controllers\ResultController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\SkillController;
+use App\Http\Controllers\SkillStudentController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -43,28 +46,55 @@ Route::middleware([
     Route::get('/lessons/addStudent/{lessonId}', [LessonController::class, 'addStudent'])->name('lessons.addStudent');
     Route::post('lessons/addstudentlesson', [LessonController::class, 'addStudentLesson'])->name('lessons.AddStudentlesson');
     Route::delete('lessons/deletestudentlesson', [LessonController::class, 'deleteStudentLesson'])->name('lessons.DeleteStudentLesson');
-    Route::delete('/aas/{id}', [AaController::class, 'destroy']);
-    Route::delete('/criteria/{id}', [AaController::class, 'destroyCriteria']);
-    Route::delete('/skills/{id}', [SkillController::class, 'destroy']);
-    Route::get('/aas/{id}/update', [AaController::class, 'update'])->name('aas.update');
+
+
+
     Route::get('/skills/{id}/edit', [SkillController::class, 'edit'])->name('skills.edit');
-    Route::post('/aas/{id}/criteria', [AaController::class, 'addCriteria'])->name('aas.criteria');
+    Route::post('/aas/{id}/criteria', [AaController::class, 'addCriteria'])->name('aas.addCriteria');
 
 
     Route::resource('lessons', LessonController::class)->only(['store', 'create']);
     Route::resource('students', StudentController::class)->only(['index', 'store', 'create', 'edit', 'update']);
     Route::resource('sections', SectionController::class)->only(['index', 'store', 'create', 'edit']);
     Route::resource('aas', AaController::class)->only(['create', 'store']);
+    Route::resource('skills', SkillController::class)->only(['create', 'store']);
 
     Route::delete('/sections/{section}', [SectionController::class, 'destroy'])->name(
         'sections.destroy'
     );
+    Route::delete('/aas/{aa}', [AaController::class, 'destroy'])->name(
+        'aas.destroy'
+    );
+    Route::delete('/criterias/{criteria}', [AaController::class, 'destroyCriteria'])->name(
+        'criterias.destroy'
+    );
+    Route::delete('/skills/{skill}', [SkillController::class, 'destroy'])->name(
+        'skills.destroy'
+    );
     Route::delete('/students/{students}', [StudentController::class, 'destroy'])->name('students.destroy');
+    Route::get('/students/{courseId}/{studentId}/note', [StudentController::class, 'note'])->name('students.note');
 
-    Route::post('/skill', [SkillController::class, 'store'])->name('skill.store');
+    // Pour CriteriaStudent
+    Route::put('/CriteriaStudents/{CriteriaStudent}', [CriteriaStudentController::class, 'update'])->name('criteriastudents.update');
+
+    Route::put('/studentlesson/update/{lessonId}/{studentId}', [LessonStudentController::class, 'update'])->name('studentlesson.update');
+    Route::put('/studentlesson/updaterefuse/{lessonId}/{studentId}', [LessonStudentController::class, 'updaterefuse'])->name('studentlesson.updaterefuse');
+    Route::put('/studentlesson/updateaccept/{lessonId}/{studentId}', [LessonStudentController::class, 'updateaccept'])->name('studentlesson.updateaccept');
+
+    // Pour SkillStudent
+    Route::put('/SkillStudents/{SkillStudent}', [SkillStudentController::class, 'update'])->name('skillstudents.update');
+    Route::get('/results/adjournement/{courseId}/{studentId}', [ResultController::class, 'adjournement'])->name('results.adjournement');
+
+    Route::get('/results/refuse/{courseId}/{studentId}', [ResultController::class, 'refuse'])->name('results.refuse');
+    Route::get('/results/accept/{studentId}/{lessonId}', [ResultController::class, 'accept'])->name('results.accept');
 
     Route::get('aas/lessons/{id}', [AaController::class, 'edit'])->name('aas.edit');
     Route::get('lessons/{id?}', [LessonController::class, 'index'])->name('lessons.index');
     Route::put('/sections/{section}', [SectionController::class, 'update'])->name('sections.update');
+    Route::put('/aas/{aa}', [AaController::class, 'update'])->name('aas.update');
+    Route::put('/skills/{skill}', [SkillController::class, 'update'])->name('skills.update');
+
+    Route::put('/criterias/{criteria}', [AaController::class, 'updateCriteria'])->name('aas.updateCriteria');
+
     Route::get('/sections/{section}/lessons', [LessonController::class, 'indexBySection'])->name('sections.lessons.index');
 });

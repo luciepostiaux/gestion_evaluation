@@ -6,9 +6,6 @@ use App\Models\Criteria;
 use App\Models\Student;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CritereEtudiant>
- */
 class CriteriaStudentFactory extends Factory
 {
     /**
@@ -23,7 +20,8 @@ class CriteriaStudentFactory extends Factory
             Criteria::get()->random()->id,
             'student_id' =>
             Student::get()->random()->id,
-            'note' => rand(0, 100)
+            'note' =>
+            fake()->numberBetween(0, 1),
 
         ];
     }

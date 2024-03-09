@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreStudentRequest;
+use App\Models\Lesson;
+use App\Models\LessonStudent;
 use App\Models\Section;
 use App\Models\Student;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
@@ -30,7 +32,7 @@ class StudentController extends Controller
         Student::create([
             'firstname' => $validated['firstname'],
             'lastname' => $validated['lastname'],
-            'section_id' => $validated['section_id']
+            'section_id' => $validated['section_id'],
         ]);
         session()->flash('flash.banner', 'Élève ajouté(e) avec succès!');
     }
@@ -68,5 +70,44 @@ class StudentController extends Controller
 
         // Redirection côté client après la mise à jour réussie
         return Inertia::location(route('students.index'));
+    }
+    public function note($courseId, $studentId)
+    {
+        // Trouver l'élève par son ID
+        $student = Student::findOrFail($studentId);
+
+        // Trouver le cours (lesson) par son ID, avec les relations préchargées pour optimisation
+        $lesson = Lesson::with('aas.criteria', 'skills')->findOrFail($courseId);
+
+        $lessonStatus = LessonStudent::where('student_id', $studentId)
+            ->where('lesson_id', $courseId)
+            ->first()
+            ->status;
+        $aas = $lesson->aas->map(function ($aa) use ($studentId) {
+            // Pour chaque AA, récupérer les critères et ajouter les notes des élèves si disponibles
+            $aa->criteria = $aa->criteria->map(function ($criteri) use ($studentId) {
+                $criteriaStudentNote = $criteri->criteriastudents()->where('student_id', $studentId)->first();
+                $criteri->studentNote = $criteriaStudentNote ? $criteriaStudentNote : "";
+                return $criteri;
+            });
+            return $aa;
+        });
+
+        // Récupérer les compétences (skills) liées au cours
+        $skills = $lesson->skills->map(function ($skill) use ($studentId) {
+            // Ajouter les notes des élèves pour chaque compétence, si disponibles
+            $skillStudentNote = $skill->skillstudent()->where('student_id', $studentId)->first();
+
+            $skill->studentNote = $skillStudentNote ? $skillStudentNote : "";
+            return $skill;
+        });
+
+        return Inertia::render('Results/Evaluation', [
+            'student' => $student,
+            'lesson' => $lesson,
+            'aas' => $aas,
+            'skills' => $skills,
+            'lessonStatus' => $lessonStatus // Ajoutez cette ligne pour inclure le statut
+        ]);
     }
 }

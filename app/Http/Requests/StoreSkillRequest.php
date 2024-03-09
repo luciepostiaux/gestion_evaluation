@@ -27,6 +27,7 @@ class StoreSkillRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'lesson_id' => ['required', 'integer', 'exists:lessons,id'], // Assurez-vous que le lesson_id existe dans la table lessons
+            'notation' => ['required', 'integer'],
         ];
     }
 }

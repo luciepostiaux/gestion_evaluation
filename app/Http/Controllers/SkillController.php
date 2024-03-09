@@ -14,19 +14,20 @@ class SkillController extends Controller
     {
         $lesson = Lesson::findOrFail($request->lesson_id);
         $validated = $request->validated();
+
         $lesson->skills()->create([
             'name' => $validated['name'],
-            'lesson_id' => $validated['lesson_id'],
-
+            'notation' => $validated['notation'],
         ]);
-        session()->flash('flash.banner', 'Critère de maîtrise ajouté avec succès!');
+        session()->flash('flash.banner', 'Skill ajoutée avec succès!');
     }
 
     public function destroy($id)
     {
-        $skill = Skill::find($id);
+        $skill = Skill::findOrFail($id);
         $skill->delete();
 
+        // Utilisez Inertia::location pour forcer la redirection côté client
         session()->flash('flash.banner', 'Skill supprimé avec succès!');
     }
     public function edit($id)
@@ -36,10 +37,10 @@ class SkillController extends Controller
     }
     public function update(StoreSkillRequest $request, $id)
     {
-        $skill = Skill::find($id);
-        $skill->update($request->all());
+        $skill = Skill::findOrFail($id);
+        $skill->update($request->validated());
 
-        session()->flash('flash.banner', 'Skill mis à jour avec succès!');
-        return redirect()->route('skills.index');
+        // Redirection côté client après la mise à jour réussie
+        session()->flash('flash.banner', 'skill modifié avec succès!');
     }
 }
