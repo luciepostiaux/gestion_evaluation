@@ -379,7 +379,7 @@ const addAa = () => {
               >
                 <!-- Affichage normal du skill -->
                 <p class="flex flex-col w-3/5">
-                  <span class="border-b-2 text-xs border-slate-800 mb-2 pb-2">{{
+                  <span class="border-b-2 text-xs border-[#1F2D55] mb-2 pb-2">{{
                     skill.name
                   }}</span>
                   <span class="text-base font-bold">/{{ skill.notation }}</span>

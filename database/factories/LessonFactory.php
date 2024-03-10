@@ -25,7 +25,8 @@ class LessonFactory extends Factory
             'user_id' =>
             User::get()->random()->id,
             'section_id' =>
-            Section::get()->random()->id
+            Section::get()->random()->id,
+
         ];
     }
 }

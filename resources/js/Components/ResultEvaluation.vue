@@ -186,17 +186,17 @@ const calculateFinalResult = () => {
         <h1 class="text-2xl font-bold">AA : {{ aa.name }}</h1>
         <ul>
           <li
-            class="flex border-2 border-slate-800 p-4 my-2"
+            class="flex border-2 border-[#1F2D55] p-4 my-2"
             v-for="criteria in aa.criteria"
             :key="criteria.id"
           >
             <span
-              class="w-2/6 border-r-2 mr-2 border-slate-800 flex items-center justify-start"
+              class="w-2/6 border-r-2 mr-2 border-[#1F2D55] flex items-center justify-start"
             >
               Critère : {{ criteria.name }}
             </span>
             <span
-              class="w-3/6 overflow-y-scroll text-xs border-r-2 mr-2 items-center justify-center flex border-slate-800"
+              class="w-3/6 overflow-y-scroll text-xs border-r-2 mr-2 items-center justify-center flex border-[#1F2D55]"
             >
               {{ criteria.description }}</span
             >
@@ -299,14 +299,14 @@ const calculateFinalResult = () => {
         </div>
       </div>
     </div>
-    <div v-if="showSkills" class="border-2 border-slate-800 text-center w-full">
+    <div v-if="showSkills" class="border-2 border-[#1F2D55] text-center w-full">
       <h2 class="text-4xl">Skills</h2>
       <div class="flex">
         <div v-for="skill in skills" :key="skill.id" class="max-w-[20%]">
           <div
             class="flex flex-col bg-slate-200 shadow-lg border p-2 rounded-lg mx-2 text-xs"
           >
-            <p class="pr-2 border-b-2 mb-2 border-slate-800 break-words">
+            <p class="pr-2 border-b-2 mb-2 border-[#1F2D55] break-words">
               {{ skill.name }}
             </p>
             <div v-if="editingSkillStudentId === skill.id">

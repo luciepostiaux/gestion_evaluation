@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
-import { Link } from "@inertiajs/vue3";
+import { Link, useForm } from "@inertiajs/vue3";
 
 const props = defineProps({
   lessons: Array,
@@ -10,7 +10,28 @@ const props = defineProps({
   studentslist: Array,
   aa: Array,
   selectedLesson: Object,
+  allTeachers: Array, // Ajoutez cette ligne
 });
+const showAddTeacherInput = ref(false);
+
+const formAddCoTeacher = useForm({
+  second_user_id: "",
+});
+const selectCoTeacher = (event) => {
+  formAddCoTeacher.second_user_id = event.target.value;
+};
+
+const saveCoTeacher = () => {
+  if (formAddCoTeacher.second_user_id) {
+    formAddCoTeacher.put(route("lessons.update", props.selectedLesson.id), {
+      onSuccess: () => {
+        // Réinitialiser le formulaire ou actualiser les données ici
+        formAddCoTeacher.reset(); // Reset le formulaire après l'envoi
+        // Vous pourriez vouloir fermer le menu déroulant ou afficher un message de succès ici
+      },
+    });
+  }
+};
 </script>
 
 <template>
@@ -18,7 +39,7 @@ const props = defineProps({
     <template #header>
       <h2 class="leading-tight">Liste des cours</h2>
     </template>
-    <div class="mb-4">
+    <div class="pb-4">
       <Link
         :href="route('lessons.create')"
         class="flex items-center justify-center transition duration-300 ease-in-out px-6 py-3 border-[#1F2D55] border-2 rounded-lg hover:bg-[#1F2D55] hover:border-transparent text-center text-white shadow-sm bg-[#1F2D55]"
@@ -36,7 +57,7 @@ const props = defineProps({
         Ajouter un cours
       </Link>
     </div>
-    <div class="">
+    <div class="mb-32">
       <!-- Navigation -->
       <div class="bg-white shadow sm:rounded-md mb-6">
         <ul class="flex divide-x divide-gray-200">
@@ -154,6 +175,47 @@ const props = defineProps({
                       aaa.description
                     }}</span>
                   </p>
+                </div>
+                <div class="flex flex-col items-end justify-end">
+                  <div class="justify-center items-center">
+                    <div
+                      v-if="selectedLesson && !selectedLesson.second_user_id"
+                      class="flex flex-col items-center justify-center space-y-4"
+                    >
+                      <button
+                        @click="showAddTeacherInput = !showAddTeacherInput"
+                        class="text-white mt-8 bg-[#1F2D55] mx-4 p-4 rounded-lg bold mb-4 hover:scale-105 transition duration-600 ease-in-out"
+                      >
+                        Ajouter un co-professeur
+                      </button>
+                    </div>
+                    <div
+                      v-if="showAddTeacherInput"
+                      class="flex flex-col mt-2 pt-4 pb-4 text-white bg-slate-100 rounded-lg shadow-lg border-[#1F2D55] border justify-center items-center space-y-2 z-20 h-auto"
+                    >
+                      <select
+                        @change="selectCoTeacher"
+                        class="select rounded-lg mb-2 text-xs mx-4 text-start text-black"
+                      >
+                        <option value="" disabled selected
+                          >Sélectionnez un professeur</option
+                        >
+                        <option
+                          v-for="teacher in allTeachers"
+                          :key="teacher.id"
+                          :value="teacher.id"
+                        >
+                          {{ teacher.name }}
+                        </option>
+                      </select>
+                      <button
+                        @click="saveCoTeacher"
+                        class="w-fit p-2 text-xs bg-[#1F2D55] rounded-lg"
+                      >
+                        Valider
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

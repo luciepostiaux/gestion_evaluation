@@ -10,6 +10,7 @@ use App\Http\Controllers\SectionController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\SkillStudentController;
 use App\Http\Controllers\StudentController;
+use App\Models\Lesson;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -87,6 +88,8 @@ Route::middleware([
     Route::put('/students/{student}', [StudentController::class, 'update'])->name('students.update');
     Route::put('/aas/{aa}', [AaController::class, 'update'])->name('aas.update');
     Route::put('/skills/{skill}', [SkillController::class, 'update'])->name('skills.update');
+    Route::put('/lessons/{lesson}', [LessonController::class, 'update'])->name('lessons.update');
+
     Route::put('/criterias/{criteria}', [AaController::class, 'updateCriteria'])->name('aas.updateCriteria');
     Route::get('/sections/{section}/lessons', [LessonController::class, 'indexBySection'])->name('sections.lessons.index');
 });

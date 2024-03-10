@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->foreignId('user_id');
+            $table->foreignId('second_user_id')->nullable();
             $table->foreignId('section_id');
             $table->timestamps();
         });
