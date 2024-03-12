@@ -11,12 +11,15 @@ class StoreCriteriaRequest extends FormRequest
         return true; // Assurez-vous que l'utilisateur est autorisé à faire cette action
     }
 
+
     public function rules()
     {
 
         return [
             'name' => ['required', 'string', 'max:255'],
+
             'aa_id' => ['required', 'exists:a_a_s,id'],
+
         ];
     }
 }

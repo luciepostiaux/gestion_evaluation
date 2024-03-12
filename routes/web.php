@@ -10,7 +10,9 @@ use App\Http\Controllers\SectionController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\SkillStudentController;
 use App\Http\Controllers\StudentController;
+
 use App\Models\Lesson;
+use App\Models\AA;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -82,6 +84,11 @@ Route::middleware([
     Route::get('/results/adjournement/{courseId}/{studentId}', [ResultController::class, 'adjournement'])->name('results.adjournement');
     Route::get('/results/refuse/{courseId}/{studentId}', [ResultController::class, 'refuse'])->name('results.refuse');
     Route::get('/results/accept/{studentId}/{lessonId}', [ResultController::class, 'accept'])->name('results.accept');
+
+    Route::post('/skill', [SkillController::class, 'store'])->name('skill.store');
+
+    Route::post('/criteria', [AAController::class, 'store'])->name('criteria.store');
+
     Route::get('aas/lessons/{id}', [AaController::class, 'edit'])->name('aas.edit');
     Route::get('lessons/{id?}', [LessonController::class, 'index'])->name('lessons.index');
     Route::put('/sections/{section}', [SectionController::class, 'update'])->name('sections.update');
