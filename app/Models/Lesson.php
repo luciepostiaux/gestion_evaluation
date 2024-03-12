@@ -11,6 +11,7 @@ class Lesson extends Model
     protected $fillable = [
         'name',
         'user_id',
+        'second_user_id',
         'section_id',
     ];
 

@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('criteria_students', function (Blueprint $table) {
             $table->id();
             $table->foreignId('student_id')->constrained()->onDelete('cascade');
-            $table->foreignId('criteria_id');
-            $table->float('note');
+            $table->foreignId('criteria_id')->constrained()->onDelete('cascade');
+            $table->integer('note');
             $table->timestamps();
         });
     }

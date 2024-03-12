@@ -5,9 +5,7 @@ namespace Database\Factories;
 use App\Models\AA;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Critere>
- */
+
 class CriteriaFactory extends Factory
 {
     /**

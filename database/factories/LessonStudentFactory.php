@@ -6,9 +6,7 @@ use App\Models\Lesson;
 use App\Models\Student;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CoursEtudiant>
- */
+
 class LessonStudentFactory extends Factory
 {
     /**
@@ -22,7 +20,8 @@ class LessonStudentFactory extends Factory
             'student_id' =>
             Student::get()->random()->id,
             'lesson_id' =>
-            Lesson::get()->random()->id
+            Lesson::get()->random()->id,
+            'status' => 0
         ];
     }
 }

@@ -8,6 +8,7 @@ use App\Models\Lesson;
 use App\Models\LessonStudent;
 use App\Models\Section;
 use App\Models\Student;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Http\Request;
@@ -40,29 +41,37 @@ class LessonController extends Controller
     }
 
 
-
     public function index($id = null)
     {
-        $lessons = Lesson::where('user_id', Auth::id())->get();
+        // Récupère les leçons où l'utilisateur connecté est le user_id ou le second_user_id
+        $lessons = Lesson::where('user_id', Auth::id())
+            ->orWhere('second_user_id', Auth::id())
+            ->get();
 
         if ($id !== null) {
             $selectedLesson = Lesson::find($id);
-            $aa = AA::where('lesson_id', $selectedLesson->id)->get();
-            $studentIds = LessonStudent::where('lesson_id', $selectedLesson->id)->pluck('student_id');
-            $studentslist = Student::query()->wherein('id', $studentIds)->get();
+            $aa = $selectedLesson ? AA::where('lesson_id', $selectedLesson->id)->get() : null;
+            $studentIds = $selectedLesson ? LessonStudent::where('lesson_id', $selectedLesson->id)->pluck('student_id') : null;
+            $studentslist = $studentIds ? Student::whereIn('id', $studentIds)->get() : null;
         } else {
             $selectedLesson = null;
-            $studentIds = null;
             $studentslist = null;
             $aa = null;
         }
+
+        // Récupère tous les utilisateurs sauf l'utilisateur actuellement connecté
+        $allTeachers = User::where('id', '!=', Auth::id())->get();
+
         return Inertia::render('Lessons/Index', [
             'lessons' => $lessons,
             'selectedLesson' => $selectedLesson,
             'studentslist' => $studentslist,
             'aa' => $aa,
+            'allTeachers' => $allTeachers, // Ajoutez cette ligne
         ]);
     }
+
+
     public function addStudent($lessonId)
     {
         $students = Student::all(); // Récupère tous les élèves
@@ -90,7 +99,7 @@ class LessonController extends Controller
             ->exists();
 
         if (!$exists) {
-            LessonStudent::create(['student_id' => $request->student_id, 'lesson_id' => $request->lesson_id]);
+            LessonStudent::create(['student_id' => $request->student_id, 'lesson_id' => $request->lesson_id, 'status' => 0]);
         }
     }
     public function deleteStudentLesson(Request $request)
@@ -103,6 +112,16 @@ class LessonController extends Controller
             ->where('lesson_id', $request->lesson_id)
             ->first();
         $inscrit->delete();
+    }
+    public function update(Request $request, Lesson $lesson)
+    {
+        $validatedData = $request->validate([
+            'second_user_id' => 'nullable|exists:users,id'
+        ]);
+
+        $lesson->update($validatedData);
+
+        return redirect()->back()->with('message', 'Co-professeur ajouté avec succès.');
     }
 
     public function indexBySection(Section $section)

@@ -20,7 +20,8 @@ class SkillFactory extends Factory
         return [
             'name' =>
             fake()->name(),
-
+            'notation' =>
+            fake()->numberBetween(1, 20),
 
             'lesson_id' => Lesson::get()->random()->id
         ];
