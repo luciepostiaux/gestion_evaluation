@@ -55,6 +55,7 @@ class AaController extends Controller
 
         session()->flash('flash.banner', 'Critère ajouté avec succès!');
     }
+
     public function destroy($id)
     {
         $aa = AA::findOrFail($id);
@@ -95,4 +96,6 @@ class AaController extends Controller
         $criteria->update($request->validated());
         session()->flash('flash.banner', 'Critère renommé avec succès!');
     }
+
+
 }
