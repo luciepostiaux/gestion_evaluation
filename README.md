@@ -1,8 +1,4 @@
-<h1>ATTENTION, POUR MISE EN LIGNE</h1>
-<h3>Remplacer dans vendor/inertiajs/inertia-laravel/srv/Response.php</h3>
-<p>'url' => $request->getBaseUrl().$request->getRequestUri(),</p>
-<h3>Par</h3>
-<p>'url' => $request->getRequestUri(),</p>
+
 
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>

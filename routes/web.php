@@ -63,6 +63,9 @@ Route::middleware([
     Route::delete('/sections/{section}', [SectionController::class, 'destroy'])->name(
         'sections.destroy'
     );
+    Route::delete('/lessons/{lesson}', [LessonController::class, 'destroy'])->name(
+        'lessons.destroy'
+    );
     Route::delete('/aas/{aa}', [AaController::class, 'destroy'])->name(
         'aas.destroy'
     );

@@ -71,7 +71,14 @@ class LessonController extends Controller
         ]);
     }
 
+    public function destroy($id)
+    {
+        $lesson = Lesson::findOrFail($id);
+        $lesson->delete();
 
+        // Utilisez Inertia::location pour forcer la redirection côté client
+        return Inertia::location(route('lessons.index'));
+    }
     public function addStudent($lessonId)
     {
         $students = Student::all(); // Récupère tous les élèves
