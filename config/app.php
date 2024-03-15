@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://mortseb.com/gestion_evaluation'),
+    'url' => env('APP_URL', 'https://evaluation.mortseb.com/'),
 
     'asset_url' => env('ASSET_URL'),
 

@@ -2,6 +2,8 @@
 import { ref } from "vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { Link, useForm } from "@inertiajs/vue3";
+import DangerButton from "@/Components/DangerButton.vue";
+import { Inertia } from "@inertiajs/inertia"; // Import Inertia
 
 const props = defineProps({
   lessons: Array,
@@ -28,6 +30,19 @@ const saveCoTeacher = () => {
         // Réinitialiser le formulaire ou actualiser les données ici
         formAddCoTeacher.reset(); // Reset le formulaire après l'envoi
         // Vous pourriez vouloir fermer le menu déroulant ou afficher un message de succès ici
+      },
+    });
+  }
+};
+const deleteLesson = (lessonId) => {
+  if (confirm("Êtes-vous sûr de vouloir supprimer ce cours ?")) {
+    Inertia.delete(route("lessons.destroy", lessonId), {
+      preserveScroll: true,
+      preserveState: false,
+      onSuccess: () => {
+        props.lessons = props.lessons.filter(
+          (lessons) => lessons.id !== lessonId
+        );
       },
     });
   }
@@ -178,6 +193,19 @@ const saveCoTeacher = () => {
                 </div>
                 <div class="flex flex-col items-end justify-end">
                   <div class="justify-center items-center">
+                    <DangerButton @click="deleteLesson(selectedLesson.id)">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="#FFFFFF"
+                        class="size-6"
+                      >
+                        <path
+                          d="M17 6H22V8H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V8H2V6H7V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V6ZM18 8H6V20H18V8ZM9 11H11V17H9V11ZM13 11H15V17H13V11ZM9 4V6H15V4H9Z"
+                        ></path>
+                      </svg>
+                      Supprimer cours
+                    </DangerButton>
                     <div
                       v-if="selectedLesson && !selectedLesson.second_user_id"
                       class="flex flex-col items-center justify-center space-y-4"
